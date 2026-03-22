@@ -1,3 +1,4 @@
+import argparse
 import atexit
 import hashlib
 import os
@@ -27,6 +28,7 @@ def create_application_with_static_handler() -> ASGIStaticFilesHandler:
 
 vite_proc: subprocess.Popen[bytes] | None = None
 tsc_proc: subprocess.Popen[bytes] | None = None
+build_mode = False
 
 
 def terminate_proc(proc: subprocess.Popen[Any]) -> None:
@@ -96,66 +98,83 @@ def generate_client_assets(*, wait: bool = False) -> None:
         process.wait()
 
 
+def build_client() -> None:
+    """Run a full production build (client + renderer + admin)."""
+    subprocess.run(
+        ["npm", "exec", "build.client"],
+        env={**os.environ.copy(), "BASE": "/static/dist/"},
+        check=True,
+    )
+
+
 class SmartChangeReload(WatchFilesReload):
     def should_restart(self) -> list[Path] | None:
         changes = super().should_restart()
 
         if changes:
             print(f"Changes detected: {changes}")
-            generate_client_assets()
+            if build_mode:
+                generate_client_assets(wait=True)
+                build_client()
+            else:
+                generate_client_assets()
         return changes
 
 
 if __name__ == "__main__":
-    generate_client_assets(wait=False)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--build", action="store_true")
+    args = parser.parse_args()
 
-    client_port = str(DEBUG_PORT)
-    backend_port = get_free_port()
+    reload_includes: list[str] = []
 
-    os.environ["REACTIVATED_VITE_PORT"] = str(client_port)
-    os.environ["REACTIVATED_DJANGO_PORT"] = str(backend_port)
+    if args.build:
+        build_mode = True
+        generate_client_assets(wait=True)
+        build_client()
+        django_port = DEBUG_PORT
+        user_port = DEBUG_PORT
+        reload_includes = ["*.tsx", "*.ts", "*.css"]
+        label = "build mode"
+    else:
+        generate_client_assets(wait=False)
+        django_port = get_free_port()
+        user_port = DEBUG_PORT
 
-    static_url = "/static/"
+        os.environ["REACTIVATED_VITE_PORT"] = str(DEBUG_PORT)
+        os.environ["REACTIVATED_DJANGO_PORT"] = str(django_port)
 
-    vite_proc = subprocess.Popen(
-        ["npm", "exec", "start_vite"],
-        env={**os.environ.copy(), "BASE": f"{static_url}dist/"},
-        start_new_session=True,
-    )
+        vite_proc = subprocess.Popen(
+            ["npm", "exec", "start_vite"],
+            env={**os.environ.copy(), "BASE": "/static/dist/"},
+            start_new_session=True,
+        )
 
-    # npm exec is weird and seems to run into duplicate issues if executed
-    # too quickly. There are better ways to do this, I assume.
-    time.sleep(0.5)
+        # npm exec is weird and seems to run into duplicate issues if executed
+        # too quickly. There are better ways to do this, I assume.
+        time.sleep(0.5)
+
+        os.environ["REACTIVATED_RENDERER"] = f"http://localhost:{DEBUG_PORT}"
+        label = "vite"
 
     tsc_proc = subprocess.Popen(
-        [
-            "npm",
-            "exec",
-            "tsc",
-            "--",
-            "--watch",
-            "--noEmit",
-            "--preserveWatchOutput",
-        ],
+        ["npm", "exec", "tsc", "--", "--watch", "--noEmit", "--preserveWatchOutput"],
         env={**os.environ.copy()},
         start_new_session=True,
     )
-    os.environ["REACTIVATED_RENDERER"] = f"http://localhost:{client_port}"
 
-    print(f"\n  Dev server: \033[1;36mhttp://localhost:{client_port}/\033[0m\n")
+    print(f"\n  Dev server ({label}): \033[1;36mhttp://localhost:{user_port}/\033[0m\n")
 
     config = Config(
         "dev:create_application_with_static_handler",
         host="127.0.0.1",
         factory=True,
         reload=True,
-        port=backend_port,
+        port=django_port,
         log_level="info",
         timeout_graceful_shutdown=0,
-        reload_excludes=[
-            "server/**/tests/**",
-            "server/**/pytests.py",
-        ],
+        reload_excludes=["server/**/tests/**", "server/**/pytests.py"],
+        reload_includes=reload_includes,
     )
     server = Server(config)
     sock = config.bind_socket()
