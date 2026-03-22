@@ -1,0 +1,34 @@
+[project]
+name = "redditdrafts"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.0,<6.1",
+    "reactivated>=0.49.0",
+    "pydantic==2.12.5",
+    "anthropic>=0.50",
+    "praw>=7.8",
+    "requests>=2.31",
+    "types-requests>=2.31",
+    "django-stubs-ext>=5.0",
+]
+
+[dependency-groups]
+dev = [
+    "uvicorn>=0.34",
+    "watchfiles>=1.0",
+    "ruff>=0.11",
+]
+
+[tool.ruff.lint]
+ignore = [
+    "E501",  # Line too long: formatter handles this.
+    "F403",  # Wildcard imports: mypy analyzes these.
+    "F821",  # Undefined names: used in Pick literals.
+]
+
+[tool.ruff.lint.per-file-ignores]
+"dev.py" = ["E402"]  # Intentional: DEBUG_PORT must be computed before imports.
+
+[tool.ruff.lint.isort]
+known-first-party = ["server"]

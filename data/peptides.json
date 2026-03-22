@@ -1,0 +1,886 @@
+{
+    "peptides": {
+        "semaglutide": {
+            "name": "Semaglutide",
+            "description": "GLP-1 agonist for weight loss",
+            "category": "Weight Loss / Metabolic",
+            "commonVials": [3, 5, 10, 20],
+            "doses": [
+                {
+                    "value": 0.25,
+                    "unit": "mg"
+                },
+                {
+                    "value": 0.5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 1,
+                    "unit": "mg"
+                },
+                {
+                    "value": 1.7,
+                    "unit": "mg"
+                },
+                {
+                    "value": 2.4,
+                    "unit": "mg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "GLP-1 receptor agonist that mimics natural incretin hormones to reduce appetite, slow gastric emptying, and improve blood sugar control.",
+                "category": "GLP-1 Receptor Agonist",
+                "blocks": [
+                    {
+                        "label": "Starting dose",
+                        "value": "0.25 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Weekly"
+                    },
+                    {
+                        "label": "Max dose",
+                        "value": "2.4 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "Semaglutide is a **GLP-1 receptor agonist**, originally developed for type 2 diabetes and now widely used for weight loss. It works by mimicking the incretin hormone GLP-1, which tells your brain you're full and slows down gastric emptying. The result is less hunger and fewer cravings without the white-knuckle willpower most diets require.\n\nYou start low at **0.25 mg per week**, then titrate up over several weeks. Most people land somewhere between **1 mg and 2.4 mg** depending on how they respond and what side effects (mostly nausea) they can tolerate. It's a **once-weekly** subcutaneous injection.\n\nThe branded versions are **Ozempic** (for diabetes) and **Wegovy** (for weight loss), but compounded semaglutide from pharmacies has become the more common route for most people sourcing it themselves.",
+                    "onset": "Appetite suppression usually kicks in within **the first week**, even at the starting dose. Noticeable weight loss typically shows up by **weeks 3 to 4**. The real results compound over months though.\n\nMost clinical trials measured outcomes at 68 weeks, where average weight loss was around **15% of body weight**. You'll likely feel the nausea before the weight loss, especially in the first couple of weeks or after each dose increase.",
+                    "sideEffects": "**Nausea** is the big one, especially during titration. It usually fades as your body adjusts to each dose. Other GI effects include **constipation, diarrhea, and occasional vomiting**. Eating smaller meals and avoiding greasy food helps.\n\nLess common but worth knowing: some people report **sulfur burps**, **hair thinning** (typically temporary, related to rapid weight loss rather than the drug itself), and fatigue. There's a boxed warning about thyroid C-cell tumors based on rodent studies, though this hasn't been observed in humans.",
+                    "storage": "Compounded semaglutide vials should be stored in the **refrigerator (36 to 46°F)**. Once reconstituted with bacteriostatic water, it's good for about **28 days** refrigerated. Don't freeze it. Keep it out of direct sunlight.\n\nReconstitution is straightforward: add bacteriostatic water to the vial, swirl gently (don't shake), and let it dissolve. The amount of water determines your concentration, which determines how many units you draw for each dose.",
+                    "aliases": "Ozempic, Wegovy, GLP-1 agonist, sema"
+                }
+            }
+        },
+        "tirzepatide": {
+            "name": "Tirzepatide",
+            "description": "Dual GLP-1 / GIP agonist for weight loss",
+            "category": "Weight Loss / Metabolic",
+            "commonVials": [5, 10, 15, 30, 60],
+            "doses": [
+                {
+                    "value": 2.5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 7.5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 10,
+                    "unit": "mg"
+                },
+                {
+                    "value": 12.5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 15,
+                    "unit": "mg"
+                }
+            ],
+            "maxConcentration": 50,
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Dual GLP-1/GIP receptor agonist providing enhanced weight loss and glycemic control through dual incretin pathway activation.",
+                "category": "Dual GLP-1/GIP Agonist",
+                "blocks": [
+                    {
+                        "label": "Starting dose",
+                        "value": "2.5 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Weekly"
+                    },
+                    {
+                        "label": "Max dose",
+                        "value": "15 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "Tirzepatide is a **dual GLP-1/GIP receptor agonist**, meaning it hits two incretin pathways instead of one. In head-to-head trials, it outperformed semaglutide for both weight loss and blood sugar control. The brand names are **Mounjaro** (diabetes) and **Zepbound** (weight loss).\n\nDosing starts at **2.5 mg weekly** and goes up to **15 mg**. The titration schedule is similar to semaglutide: increase every 4 weeks as tolerated. Side effects overlap too, with nausea being the main one, though some people report it's milder than semaglutide.\n\nCompounded tirzepatide typically comes in higher-concentration vials (up to 50 mg/mL), so getting your reconstitution math right matters more here than with most peptides.",
+                    "onset": "Similar timeline to semaglutide. Appetite reduction within **the first week**, measurable weight loss by **weeks 3 to 4**.\n\nThe SURMOUNT trials showed average weight loss of **20 to 25% of body weight** at the highest doses over 72 weeks, which is meaningfully better than semaglutide's numbers. Some people respond better to tirzepatide than semaglutide and vice versa, so switching is common if one doesn't work well.",
+                    "sideEffects": "GI side effects are the main ones: **nausea, diarrhea, constipation**, decreased appetite (which is kind of the point). Tends to be a bit gentler on the stomach than semaglutide for many people, though your mileage will vary.\n\nSame caveats as semaglutide regarding **hair thinning** during rapid weight loss. Injection site reactions are occasionally reported. The thyroid C-cell tumor warning applies here too.",
+                    "storage": "Same protocol as semaglutide: **refrigerate at 36 to 46°F**, good for about **28 days** after reconstitution. Reconstitute with bacteriostatic water, swirl gently.\n\nBecause compounded tirzepatide often comes in high-concentration vials, pay extra attention to your water volume. A small error in reconstitution math at 50 mg/mL means a much bigger dosing error than with a 5 mg/mL vial.",
+                    "aliases": "Mounjaro, Zepbound, tirz, dual GIP/GLP-1 agonist"
+                }
+            }
+        },
+        "retatrutide": {
+            "name": "Retatrutide",
+            "description": "Triple agonist for weight loss",
+            "category": "Weight Loss / Metabolic",
+            "commonVials": [10, 15, 20, 30],
+            "doses": [
+                {
+                    "value": 1,
+                    "unit": "mg"
+                },
+                {
+                    "value": 2,
+                    "unit": "mg"
+                },
+                {
+                    "value": 4,
+                    "unit": "mg"
+                },
+                {
+                    "value": 8,
+                    "unit": "mg"
+                },
+                {
+                    "value": 12,
+                    "unit": "mg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Triple hormone receptor agonist targeting GLP-1, GIP, and glucagon receptors for enhanced metabolic improvement and weight reduction.",
+                "category": "Triple Agonist (GLP-1/GIP/GCG)",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "1 – 12 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Weekly"
+                    }
+                ],
+                "guide": {
+                    "description": "Retatrutide is a **triple agonist** that targets **GLP-1, GIP, and glucagon receptors**. Adding the glucagon receptor on top of what tirzepatide already does is the key differentiator. Early trial data showed weight loss results exceeding both semaglutide and tirzepatide, with some participants losing over **24% of body weight**.\n\nIt's still in clinical trials and **not yet FDA-approved**. Dosing in the trials ranged from **1 mg to 12 mg weekly**. Because it's newer, there's less real-world data on long-term use compared to semaglutide or tirzepatide.",
+                    "onset": "Based on Phase 2 trial data, appetite suppression shows up in **the first week or two**. Weight loss results at 48 weeks were striking, with the 12 mg group averaging around **24% body weight loss**.\n\nThe glucagon receptor component may also contribute to **increased energy expenditure**, which is something semaglutide and tirzepatide don't directly do. Since it's still in trials, real-world timelines are less established. Expect a similar ramp-up period as the other GLP-1 class drugs.",
+                    "sideEffects": "GI side effects dominate again: **nausea, diarrhea, vomiting, constipation**. The trial data showed these were mostly mild to moderate and decreased over time. **Increased heart rate** was reported in some participants, likely related to the glucagon receptor activity.\n\nBecause it's pre-approval, the long-term safety profile is less understood than semaglutide or tirzepatide. Something to factor in.",
+                    "storage": "**Refrigerate at 36 to 46°F.** Reconstitute with bacteriostatic water, swirl gently. Same general handling as other lyophilized peptides. Good for about **28 days** once reconstituted.",
+                    "aliases": "Reta, LY3437943, triple G, triple agonist"
+                }
+            }
+        },
+        "cagrilintide": {
+            "name": "Cagrilintide",
+            "description": "Amylin analog for appetite suppression",
+            "category": "Weight Loss / Metabolic",
+            "commonVials": [5, 10, 20],
+            "doses": [
+                {
+                    "value": 0.25,
+                    "unit": "mg"
+                },
+                {
+                    "value": 0.5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 1,
+                    "unit": "mg"
+                },
+                {
+                    "value": 1.7,
+                    "unit": "mg"
+                },
+                {
+                    "value": 2.4,
+                    "unit": "mg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Long-acting amylin analog that enhances satiety signaling and slows gastric emptying for sustained appetite suppression and weight management.",
+                "category": "Amylin Analog",
+                "blocks": [
+                    {
+                        "label": "Starting dose",
+                        "value": "0.25 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Weekly"
+                    },
+                    {
+                        "label": "Max dose",
+                        "value": "2.4 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "Cagrilintide is a **long-acting amylin analog**. Amylin is a hormone your pancreas releases alongside insulin after meals. It slows gastric emptying, reduces glucagon secretion, and promotes satiety through a different mechanism than GLP-1 drugs.\n\n**Novo Nordisk** is developing it as part of **CagriSema**, a combination with semaglutide. The idea is that stacking two different satiety pathways gives better results than either alone. Early trial data supports this.\n\nDosing follows a similar titration pattern to semaglutide: start at **0.25 mg weekly** and work up to **2.4 mg**. It's injected subcutaneously once a week.",
+                    "onset": "Appetite reduction and early satiety within **the first week or two**. As a standalone, the weight loss is more modest than GLP-1 agonists, with trial data showing around **10 to 11% body weight loss** at 2.4 mg over 32 weeks.\n\nThe real promise is in the combination with semaglutide (**CagriSema**), where the two mechanisms together produced greater results than either alone.",
+                    "sideEffects": "**Nausea** and GI discomfort are the most common, similar to other peptides in this space. **Injection site reactions** have been reported. Because amylin slows gastric emptying, **bloating and fullness** after meals can be more pronounced than with GLP-1 drugs alone.\n\nHypoglycemia risk is low when used without insulin, but worth monitoring if you're stacking with other glucose-lowering compounds.",
+                    "storage": "**Refrigerate at 36 to 46°F.** Reconstitute with bacteriostatic water. Good for about **28 days** after reconstitution. Standard handling: don't freeze, avoid direct sunlight, swirl rather than shake.",
+                    "aliases": "NN9838, cagri, amylin analog"
+                }
+            }
+        },
+        "bpc-157": {
+            "name": "BPC-157",
+            "description": "Tissue healing and gut repair",
+            "category": "Repair / Regeneration",
+            "commonVials": [5, 10],
+            "doses": [
+                {
+                    "value": 250,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 500,
+                    "unit": "mcg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Body Protection Compound derived from human gastric juice that accelerates tissue healing, supports gut repair, and promotes angiogenesis.",
+                "category": "Healing Peptide",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "250 – 500 mcg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Daily"
+                    }
+                ],
+                "guide": {
+                    "description": "BPC-157, short for **Body Protection Compound-157**, is a synthetic peptide derived from a protein found in human gastric juice. It's used primarily for **tissue healing, gut repair, and injury recovery**. The research on it is mostly animal studies, but the anecdotal reports from the peptide community are extensive.\n\nPeople use it for tendon and ligament injuries, gut issues like leaky gut or IBS, and general recovery from surgery or training. The typical dose is **250 to 500 mcg per day**, injected subcutaneously near the injury site or in the abdomen for systemic effects.\n\nIt's often stacked with TB-500 for enhanced healing, a combination sometimes called the **\"Wolverine stack.\"**",
+                    "onset": "Many people report feeling something within **the first few days**, especially for gut issues. For tendon and joint injuries, noticeable improvement usually starts around **week 2 to 3**. Full healing protocols typically run **4 to 8 weeks**.\n\nThe effect is cumulative. Don't expect overnight results on a chronic injury, but it's one of the faster-acting healing peptides in terms of when you start noticing a difference.",
+                    "sideEffects": "BPC-157 is generally well tolerated. The most commonly reported side effects are mild: **nausea, dizziness, and headache**, though these are relatively rare. Some people report feeling warm or flushed after injection.\n\nThere's a theoretical concern about BPC-157 promoting **blood vessel growth (angiogenesis)**, which could be problematic if you have existing tumors. No human clinical trials have confirmed this, but it's worth being aware of if you have a relevant medical history.",
+                    "storage": "**Refrigerate at 36 to 46°F** after reconstitution. Lyophilized (powder) form is more stable and can be stored at room temperature before reconstitution. Once you add bacteriostatic water, use it within **28 days**.\n\nBPC-157 is a small peptide and dissolves quickly. Add the water slowly down the side of the vial and it should be fully dissolved within a minute without much swirling.",
+                    "aliases": "Body Protection Compound-157, BPC, Pentadecapeptide, PL 14736"
+                }
+            }
+        },
+        "tb-500": {
+            "name": "TB-500",
+            "description": "Injury recovery and flexibility",
+            "category": "Repair / Regeneration",
+            "commonVials": [5, 10],
+            "doses": [
+                {
+                    "value": 2,
+                    "unit": "mg"
+                },
+                {
+                    "value": 3,
+                    "unit": "mg"
+                },
+                {
+                    "value": 4,
+                    "unit": "mg"
+                },
+                {
+                    "value": 5,
+                    "unit": "mg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Synthetic fragment of Thymosin Beta-4 that promotes tissue repair, reduces inflammation, and improves flexibility and injury recovery.",
+                "category": "Healing Peptide",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "2 – 5 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "2× weekly"
+                    }
+                ],
+                "guide": {
+                    "description": "TB-500 is a synthetic version of **Thymosin Beta-4**, a naturally occurring peptide involved in tissue repair and cell migration. It promotes healing, reduces inflammation, and can improve flexibility and range of motion after injuries.\n\nThe typical protocol is **2 to 5 mg** injected subcutaneously, usually **twice a week** during a loading phase, then dropping to a maintenance dose. It's commonly used for muscle tears, tendinitis, and joint injuries.\n\nTB-500 works through a different mechanism than BPC-157, which is why they're frequently combined. BPC-157 promotes angiogenesis (new blood vessel formation) while TB-500 focuses on **cell migration and differentiation**.",
+                    "onset": "TB-500 tends to be slower than BPC-157. Most people start noticing reduced stiffness and improved mobility around **weeks 2 to 4**. A typical loading phase runs **4 to 6 weeks** with twice-weekly injections, then maintenance at once weekly or less.\n\nFor acute injuries, the response is usually faster. For chronic issues like long-standing tendinitis, give it the full loading phase before judging whether it's working.",
+                    "sideEffects": "Generally well tolerated. The most common report is a **temporary head rush** or slight lethargy after injection. Some people get mild headaches. Injection site redness or irritation can happen.\n\nLike BPC-157, there's a theoretical **angiogenesis concern**. The original Thymosin Beta-4 research flagged potential interactions with certain cancers, though this hasn't been definitively established with TB-500. Worth discussing with your provider if you have a relevant history.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder form can be stored at room temperature. Once reconstituted with bacteriostatic water, use within **28 days**.\n\nTB-500 doses are larger than most peptides (milligrams rather than micrograms), so you'll go through vials faster. Plan your water volume accordingly so you're not drawing huge volumes per injection.",
+                    "aliases": "Thymosin Beta-4 fragment, TB4, T\u03b24"
+                }
+            }
+        },
+        "ghk-cu": {
+            "name": "GHK-Cu",
+            "description": "Skin rejuvenation and wound healing",
+            "category": "Repair / Regeneration",
+            "commonVials": [10, 50],
+            "doses": [
+                {
+                    "value": 1,
+                    "unit": "mg"
+                },
+                {
+                    "value": 2,
+                    "unit": "mg"
+                },
+                {
+                    "value": 2.5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 4,
+                    "unit": "mg"
+                }
+            ],
+            "maxConcentration": 50,
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Copper peptide complex that stimulates collagen synthesis, promotes wound healing, and supports skin and tissue rejuvenation at the cellular level.",
+                "category": "Copper Peptide",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "1 – 4 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Daily"
+                    }
+                ],
+                "guide": {
+                    "description": "GHK-Cu is a **copper peptide complex** that occurs naturally in human plasma, saliva, and urine. It declines with age, which is part of why it's become popular in the anti-aging and skin rejuvenation space.\n\nIt stimulates **collagen and glycosaminoglycan synthesis**, promotes wound healing, and has antioxidant and anti-inflammatory effects. People use it both topically (in serums and creams) and via subcutaneous injection for more systemic effects.\n\nInjectable doses typically range from **1 to 4 mg daily**. It's a common component in healing blends alongside BPC-157 and TB-500, where it adds the skin and tissue rejuvenation angle.",
+                    "onset": "For skin improvements (texture, firmness, fine lines), most people start seeing changes around **weeks 4 to 6** with consistent use. Hair quality improvements, if they happen, take longer — usually **2 to 3 months**.\n\nFor wound healing and post-procedure recovery, the timeline is faster. People report accelerated healing within **the first couple of weeks**. Injectable use tends to produce more noticeable systemic effects than topical, though topical is plenty for localized skin concerns.",
+                    "sideEffects": "Very few reported side effects. **Injection site irritation** is the most common. Some people notice a **metallic taste** after injection, likely related to the copper component. Mild stomach discomfort has been reported occasionally.\n\nExcessive copper supplementation can be problematic in general, so don't go overboard on dose or duration. If you're also taking copper supplements or have **Wilson's disease**, consult your doctor first.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** GHK-Cu is **light-sensitive**, so store it in a dark place or keep the vial wrapped. Reconstitute with bacteriostatic water and use within **28 days**.\n\nThe copper gives the reconstituted solution a faint blue tint, which is normal. If it's a strong blue or changes color significantly, something's off.",
+                    "aliases": "Copper peptide, GHK copper, glycyl-L-histidyl-L-lysine:copper(II)"
+                }
+            }
+        },
+        "kpv": {
+            "name": "KPV",
+            "description": "Anti-inflammatory tripeptide",
+            "category": "Repair / Regeneration",
+            "commonVials": [5, 10],
+            "doses": [
+                {
+                    "value": 200,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 500,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 1,
+                    "unit": "mg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Anti-inflammatory tripeptide derived from alpha-MSH that modulates immune response and targets gut and systemic inflammation.",
+                "category": "Anti-inflammatory Peptide",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "200 mcg – 1 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Daily"
+                    }
+                ],
+                "guide": {
+                    "description": "KPV is an **anti-inflammatory tripeptide** derived from alpha-MSH (alpha-melanocyte-stimulating hormone). It's the three amino acids at the tail end of alpha-MSH responsible for most of the anti-inflammatory activity.\n\nIt targets **NF-kB**, one of the main inflammatory pathways in the body, and has shown promise in studies on inflammatory bowel disease and gut inflammation. People use it for gut issues, autoimmune-related inflammation, and general systemic inflammation.\n\nDosing ranges from **200 mcg to 1 mg daily**. Some people take it orally in capsule form for gut-specific effects, while others inject it subcutaneously for broader anti-inflammatory benefits.",
+                    "onset": "For gut inflammation, many people report noticeable relief within **1 to 2 weeks**, especially for bloating and discomfort. Systemic anti-inflammatory effects take longer, typically **3 to 4 weeks** of consistent use.\n\nOral capsules tend to target the GI tract more directly. If your main concern is gut inflammation, oral may actually be the better route. For joint pain or systemic issues, subcutaneous injection gets it into circulation more effectively.",
+                    "sideEffects": "KPV is well tolerated overall. Side effects are rarely reported. Some people experience **mild fatigue or headache**. Because it's derived from alpha-MSH, there's a theoretical potential for slight skin darkening at higher doses, though this is far less pronounced than with Melanotan peptides.\n\nIf you're taking **immunosuppressive medications**, talk to your doctor before using KPV. Modulating NF-kB on top of existing immunosuppression could be too much.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Lyophilized powder is stable at room temperature. Reconstitute with bacteriostatic water, use within **28 days**.\n\nIf using oral capsules, store them in a cool, dry place. No reconstitution needed for that form.",
+                    "aliases": "Lys-Pro-Val, alpha-MSH fragment, KPV tripeptide"
+                }
+            }
+        },
+        "glow": {
+            "name": "Glow (GHK + BPC + TB)",
+            "description": "Comprehensive tissue repair",
+            "category": "Repair / Regeneration",
+            "components": [
+                {
+                    "peptide": "ghk-cu",
+                    "mg": 50
+                },
+                {
+                    "peptide": "bpc-157",
+                    "mg": 10
+                },
+                {
+                    "peptide": "tb-500",
+                    "mg": 10
+                }
+            ],
+            "commonVials": [70],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Comprehensive tissue repair blend combining GHK-Cu, BPC-157, and TB-500 for synergistic healing, skin rejuvenation, and recovery.",
+                "category": "Healing Blend",
+                "blocks": [
+                    {
+                        "label": "GHK-Cu",
+                        "value": "50 mg"
+                    },
+                    {
+                        "label": "BPC-157",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "TB-500",
+                        "value": "10 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "The Glow blend is the Wolverine stack plus **GHK-Cu** (50 mg). Adding the copper peptide shifts the focus from pure injury repair toward **tissue rejuvenation and skin quality**.\n\nGHK-Cu stimulates **collagen and glycosaminoglycan synthesis**, the structural proteins that keep skin firm and joints cushioned. Paired with the wound-healing properties of BPC-157 and the cell-migration effects of TB-500, you get tissue repair and collagen regeneration in one vial.\n\nPeople use it for post-procedure recovery (microneedling, surgery), anti-aging, and chronic injuries where tissue quality has degraded. If skin or connective tissue appearance matters to you on top of healing, this is the better pick over the Wolverine stack.",
+                    "onset": "The BPC-157 and TB-500 components follow the same timeline as the Wolverine stack: initial improvement within **the first 1 to 2 weeks**, with structural repair building over **weeks 2 to 4**.\n\nThe GHK-Cu component is slower. Skin texture and firmness improvements typically show up around **weeks 4 to 6**. Collagen remodeling takes time. For post-procedure recovery (after microneedling or laser treatments), the healing acceleration is usually noticeable within **the first couple of weeks**.",
+                    "sideEffects": "Side effects are similar to the Wolverine stack: mild **nausea, headache, lightheadedness**, and injection site irritation. The GHK-Cu component can cause a **metallic taste** after injection, related to the copper.\n\nThe reconstituted solution may have a faint **blue tint** from the copper peptide. That's normal. If the color is unusually strong or changes over time, something may be off with the vial. Same **angiogenesis caveat** as the Wolverine stack.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** GHK-Cu is **light-sensitive**, so store the vial in the fridge or wrapped to avoid direct light. Reconstitute with bacteriostatic water and use within **28 days**.\n\nThe total vial content is 70 mg, with the GHK-Cu making up the bulk. Pay attention to your reconstitution math so your per-dose volume stays manageable.",
+                    "aliases": "Glow stack, GHK/BPC/TB blend, rejuvenation blend, GHK-Cu + Wolverine"
+                }
+            }
+        },
+        "wolverine": {
+            "name": "Wolverine (BPC + TB)",
+            "description": "Tissue repair and recovery",
+            "category": "Repair / Regeneration",
+            "components": [
+                {
+                    "peptide": "bpc-157",
+                    "mg": 10
+                },
+                {
+                    "peptide": "tb-500",
+                    "mg": 10
+                }
+            ],
+            "commonVials": [20],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Tissue repair blend combining BPC-157 and TB-500 for accelerated injury recovery, inflammation reduction, and healing.",
+                "category": "Healing Blend",
+                "blocks": [
+                    {
+                        "label": "BPC-157",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "TB-500",
+                        "value": "10 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "The Wolverine stack is probably the most well-known healing peptide combination. It pairs **BPC-157** (10 mg) and **TB-500** (10 mg) in a single vial, targeting tissue repair through two different mechanisms.\n\nBPC-157 promotes **angiogenesis**, the formation of new blood vessels, which brings more blood flow to injured tissue. TB-500 works through **cell migration and differentiation**, helping cells get to damaged areas and rebuild. You're attacking an injury from two angles at once.\n\nPeople use it for tendon and ligament injuries, post-surgical recovery, muscle tears, and chronic joint pain. Having both peptides in one vial simplifies the injection process. Typical protocols run **4 to 8 weeks**, with injections close to the injury site or subcutaneously in the abdomen for systemic effects.",
+                    "onset": "BPC-157 tends to act faster than TB-500. Many people notice initial improvement within **the first week**, especially for inflammatory symptoms. The TB-500 component kicks in around **weeks 2 to 4**, contributing more to structural repair and flexibility.\n\nFor acute injuries (a recent muscle tear or post-surgery), the response is usually faster than for chronic issues like long-standing tendinitis. Give the blend a full **4 to 6 weeks** before deciding if it's working. The effects are cumulative.",
+                    "sideEffects": "Both peptides are generally well tolerated. The most commonly reported effects are mild: **occasional nausea, headache, or dizziness** from the BPC-157 component, and **temporary lightheadedness or lethargy** from the TB-500 component. Injection site irritation can happen with either.\n\nThe main theoretical concern is **angiogenesis**. Both BPC-157 and TB-500 promote new blood vessel growth, which could be problematic if you have existing tumors or a relevant cancer history. No human clinical trials have confirmed this risk, but it's worth discussing with your provider.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Lyophilized powder is stable at room temperature before reconstitution. Add bacteriostatic water, swirl gently, and use within **28 days**.\n\nThe total vial content is 20 mg and doses are in the milligram range, so plan your water volume so you're not drawing huge volumes per injection.",
+                    "aliases": "Wolverine stack, BPC/TB stack, BPC-157 + TB-500, healing stack"
+                }
+            }
+        },
+        "klow": {
+            "name": "KLOW (GHK + KPV + BPC + TB)",
+            "description": "Anti-inflammatory tissue repair",
+            "category": "Repair / Regeneration",
+            "components": [
+                {
+                    "peptide": "ghk-cu",
+                    "mg": 50
+                },
+                {
+                    "peptide": "kpv",
+                    "mg": 10
+                },
+                {
+                    "peptide": "bpc-157",
+                    "mg": 10
+                },
+                {
+                    "peptide": "tb-500",
+                    "mg": 10
+                }
+            ],
+            "commonVials": [80],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Anti-inflammatory tissue repair blend combining GHK-Cu, KPV, BPC-157, and TB-500 for comprehensive healing with inflammation control.",
+                "category": "Healing Blend",
+                "blocks": [
+                    {
+                        "label": "GHK-Cu",
+                        "value": "50 mg"
+                    },
+                    {
+                        "label": "KPV",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "BPC-157",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "TB-500",
+                        "value": "10 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "KLOW takes the Glow blend and adds **KPV** (10 mg), an anti-inflammatory tripeptide derived from alpha-MSH. So you get GHK-Cu (50 mg), KPV (10 mg), BPC-157 (10 mg), and TB-500 (10 mg) in one vial.\n\nThe KPV component targets **NF-kB**, one of the body's main inflammatory signaling pathways. Adding it means you're repairing tissue, building collagen, and actively dampening the inflammatory response that can slow healing and cause chronic pain.\n\nThis blend makes the most sense when **inflammation is a primary concern**: autoimmune-related joint issues, gut inflammation alongside tissue healing, or recovery where chronic inflammation is part of the problem. If you have a straightforward tendon injury without much systemic inflammation, the Wolverine or Glow blends are probably enough.",
+                    "onset": "The healing timeline matches the Glow blend: BPC-157 effects within **the first week or two**, TB-500 around **weeks 2 to 4**, and GHK-Cu skin and tissue quality improvements around **weeks 4 to 6**.\n\nKPV's anti-inflammatory effects show up within **1 to 2 weeks**, particularly for gut-related inflammation like bloating or discomfort. Broader systemic benefits take closer to **3 to 4 weeks** of consistent use. Having KPV handle the inflammation while the other components handle repair can speed things up compared to the Glow blend alone.",
+                    "sideEffects": "Same profile as the Glow blend, plus the KPV-specific considerations. KPV is well tolerated, with **mild fatigue or headache** occasionally reported. Because it's derived from alpha-MSH, there's a theoretical potential for slight **skin darkening** at higher doses, though far less pronounced than with Melanotan peptides.\n\nIf you're taking **immunosuppressive medications**, talk to your doctor before using this blend. KPV modulates NF-kB, and layering that on top of existing immunosuppression could be too much.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Like the Glow blend, the GHK-Cu component makes this **light-sensitive**, so keep it in the fridge or wrapped. Reconstitute with bacteriostatic water and use within **28 days**.\n\nThe total vial content is 80 mg. With four components, getting your reconstitution volume right matters for keeping per-dose draw volumes reasonable.",
+                    "aliases": "KLOW stack, KPV + Glow, anti-inflammatory healing blend, GHK/KPV/BPC/TB blend"
+                }
+            }
+        },
+        "melanotan-1": {
+            "name": "Melanotan I",
+            "description": "Gradual, natural-looking tanning",
+            "category": "Cosmetic",
+            "commonVials": [10],
+            "doses": [
+                {
+                    "value": 250,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 500,
+                    "unit": "mcg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Alpha-melanocyte stimulating hormone analog that promotes gradual, natural-looking skin pigmentation through melanocortin receptor activation.",
+                "category": "Melanocortin Peptide",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "250 – 500 mcg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Daily"
+                    }
+                ],
+                "guide": {
+                    "description": "Melanotan I (**afamelanotide**) is a synthetic analog of alpha-MSH that stimulates melanin production in the skin. It produces a gradual, more natural-looking tan compared to its sibling Melanotan II.\n\nIt was originally developed for preventing skin damage in people with photosensitivity conditions and has an approved medical use under the brand name **Scenesse**. For tanning purposes, it's used off-label at doses of **250 to 500 mcg daily** via subcutaneous injection.\n\nThe tan develops slowly over weeks and requires at least some UV exposure to activate. It's the more targeted option compared to Melanotan II, as it primarily acts on the **MC1 receptor** without the broader melanocortin effects.",
+                    "onset": "Don't expect a tan after the first injection. MT1 works gradually. Most people start seeing a visible color change around **weeks 2 to 3**, with full results developing over **6 to 10 weeks** of consistent dosing plus UV exposure.\n\nThe tan looks more natural than MT2 because it follows your skin's existing melanin distribution. You still need some sun or UV bed exposure — it doesn't work without it. Once you hit your desired color, you can switch to a **maintenance dose of 1 to 2 injections per week**.",
+                    "sideEffects": "**Nausea** is the most common side effect, especially in the first few days. Taking it before bed or on an empty stomach can help. **Facial flushing** and mild headaches are also reported.\n\nExisting **moles and freckles may darken**. This is normal but worth monitoring. Any mole that changes shape or becomes irregular should be checked by a dermatologist. MT1 is considered safer than MT2 in this regard since it's more selective.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder form is relatively stable and can be stored at room temperature. Once reconstituted with bacteriostatic water, use within **28 days**.\n\nThe peptide is **light-sensitive**. Keep it in the fridge door or wrapped in foil.",
+                    "aliases": "MT1, MT-1, afamelanotide, Scenesse, Melanotan 1"
+                }
+            }
+        },
+        "melanotan-2": {
+            "name": "Melanotan II",
+            "description": "Rapid tanning and libido",
+            "category": "Cosmetic",
+            "commonVials": [10],
+            "doses": [
+                {
+                    "value": 250,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 500,
+                    "unit": "mcg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Potent non-selective melanocortin receptor agonist that rapidly promotes skin pigmentation and may enhance libido through MC receptor activation.",
+                "category": "Melanocortin Peptide",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "250 – 500 mcg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Daily"
+                    }
+                ],
+                "guide": {
+                    "description": "Melanotan II is a **non-selective melanocortin receptor agonist**, meaning it hits several MC receptors beyond just the one responsible for tanning. This gives it a broader range of effects: **skin pigmentation, increased libido, and appetite suppression**.\n\nThe tanning effect is faster and more pronounced than Melanotan I, but the trade-off is more potential side effects, including nausea (especially early on), facial flushing, and increased mole darkening. Dosing is typically **250 to 500 mcg daily** during a loading phase, then tapering to maintenance.\n\nIt's popular in the cosmetic peptide space, though the libido-enhancing effects have made it a dual-purpose compound for many users.",
+                    "onset": "Faster results than MT1. Some people notice slight color change within **the first week**, with significant tanning by **weeks 2 to 4**. The libido effects can kick in within hours of the first injection for some people.\n\nAppetite suppression is a secondary effect that varies person to person. UV exposure still helps activate the melanin, but MT2 can produce some color change even without much sun.\n\nLoading phase is usually **2 to 4 weeks** of daily injections, then maintenance drops to **1 to 2 times per week** to hold the tan.",
+                    "sideEffects": "More side effects than MT1 due to the non-selective receptor activity. **Nausea** is very common for the first few injections. Starting with a lower dose (100 to 250 mcg) and working up can help. **Facial flushing, headaches, and fatigue** are also reported.\n\n**Mole darkening** is more pronounced than with MT1. New moles can appear. Get a baseline mole check before starting and monitor throughout. Spontaneous erections in men are a known effect and can be awkward.",
+                    "storage": "Same as MT1: **refrigerate after reconstitution**, use within **28 days**, keep away from light. Reconstitute with bacteriostatic water.",
+                    "aliases": "MT2, MT-2, Melanotan 2"
+                }
+            }
+        },
+        "hgh": {
+            "name": "HGH (Human Growth Hormone)",
+            "description": "Growth hormone for recovery and anti-aging",
+            "category": "Growth Hormone",
+            "commonVials": [4, 10, 12],
+            "doses": [
+                {
+                    "value": 1,
+                    "unit": "IU"
+                },
+                {
+                    "value": 2,
+                    "unit": "IU"
+                },
+                {
+                    "value": 3,
+                    "unit": "IU"
+                },
+                {
+                    "value": 4,
+                    "unit": "IU"
+                },
+                {
+                    "value": 5,
+                    "unit": "IU"
+                }
+            ],
+            "iuPerMg": 3,
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Recombinant human growth hormone that promotes recovery, anti-aging, fat loss, and lean muscle maintenance through IGF-1 pathway activation.",
+                "category": "Growth Hormone",
+                "blocks": [
+                    {
+                        "label": "Starting dose",
+                        "value": "1 IU"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Daily"
+                    },
+                    {
+                        "label": "Max dose",
+                        "value": "5 IU"
+                    }
+                ],
+                "guide": {
+                    "description": "HGH is **recombinant human growth hormone**, identical to what your pituitary gland produces naturally. Production peaks during puberty and steadily declines with age, which is the basis for its use in anti-aging, recovery, and body composition.\n\nAt lower doses (**1 to 2 IU daily**), it's used for anti-aging, better sleep, skin quality, and recovery. At higher doses (**3 to 5 IU daily**), it shifts toward fat loss and lean muscle preservation. It's injected subcutaneously, typically in the morning or before bed.\n\nHGH is dosed in **international units (IU)**, not milligrams, though the conversion is roughly 3 IU per milligram. It's one of the more expensive peptides and is a **controlled substance** in many jurisdictions, unlike most other peptides.",
+                    "onset": "**Sleep improvement** is often the first thing people notice, sometimes within the first week. Skin quality changes (thicker, more hydrated skin) show up around **weeks 3 to 4**. Fat loss and body composition changes take longer, typically **2 to 3 months** of consistent use.\n\nThe full anti-aging and recovery benefits play out over **6 to 12 months**. HGH is a long game. Some people report water retention and joint stiffness early on, which usually settles down as the body adjusts.",
+                    "sideEffects": "**Water retention and joint pain** are the most common, especially at higher doses. **Carpal tunnel symptoms** can develop. These are dose-dependent and usually resolve by lowering the dose.\n\nHGH raises blood sugar, so **monitor your fasting glucose** if you're using it regularly. At higher doses, there's a risk of **insulin resistance** over time. Gynecomastia (breast tissue growth in men) is possible at elevated doses.\n\nLong-term use at high doses carries more serious theoretical risks, including potential acceleration of existing cancers. Stick to reasonable doses and get bloodwork done periodically.",
+                    "storage": "HGH is **temperature-sensitive**. **Refrigerate at 36 to 46°F** at all times, both before and after reconstitution. Do not freeze. It degrades faster than most peptides if left at room temperature.\n\nReconstitute with bacteriostatic water or the diluent provided. Let the water run down the side of the vial and allow it to dissolve without shaking. Use within **28 days** of reconstitution.",
+                    "aliases": "rHGH, somatropin, growth hormone, GH, Genotropin, Norditropin, Humatrope, Saizen"
+                }
+            }
+        },
+        "pt-141": {
+            "name": "PT-141",
+            "description": "Sexual arousal and dysfunction",
+            "category": "Custom / Other",
+            "commonVials": [10],
+            "doses": [
+                {
+                    "value": 500,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 1,
+                    "unit": "mg"
+                },
+                {
+                    "value": 1.5,
+                    "unit": "mg"
+                },
+                {
+                    "value": 2,
+                    "unit": "mg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Melanocortin receptor agonist approved for treatment of hypoactive sexual desire disorder through central nervous system activation.",
+                "category": "Melanocortin Agonist",
+                "blocks": [
+                    {
+                        "label": "Starting dose",
+                        "value": "1 mg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "As needed"
+                    },
+                    {
+                        "label": "Max dose",
+                        "value": "2 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "PT-141 (**bremelanotide**) is a melanocortin receptor agonist approved by the FDA under the brand name **Vyleesi** for hypoactive sexual desire disorder in premenopausal women. It works through the **central nervous system** rather than the vascular system, which makes it mechanically different from drugs like Viagra or Cialis.\n\nIt's used off-label by both men and women for sexual dysfunction and low libido. The typical dose is **1 to 2 mg** injected subcutaneously about **45 minutes before** desired effect. It's not a daily medication — you take it as needed.\n\nSide effects include nausea (common with the first few doses) and temporary skin darkening due to its melanocortin activity. Most people find the nausea diminishes after a few uses.",
+                    "onset": "Effects typically begin **30 to 60 minutes** after injection and can last **6 to 12 hours**. This isn't like flipping a switch — it increases desire and arousal rather than producing a mechanical response. Some people respond strongly on the first dose, others need 2 to 3 uses before feeling the full effect.\n\nThe nausea is usually worst on the first injection. Many people take an anti-nausea medication the first time or start with a lower dose (500 mcg) to test tolerance.",
+                    "sideEffects": "**Nausea** is the headline side effect, especially the first few times. It typically fades with subsequent uses. **Flushing and headache** are also common.\n\n**Skin darkening** can occur with repeated use, particularly on the face. This is dose-dependent and reversible after stopping. The FDA labeling recommends **no more than 8 doses per month**.\n\nBlood pressure elevation has been reported. If you have uncontrolled hypertension, this one's probably not for you.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder is stable at room temperature. Reconstitute with bacteriostatic water and use within **28 days**.\n\nSince PT-141 is used as-needed rather than daily, a single reconstituted vial lasts a while. Make sure you're still within the 28-day window.",
+                    "aliases": "Bremelanotide, Vyleesi, PT141"
+                }
+            }
+        },
+        "cjc-1295": {
+            "name": "CJC-1295",
+            "description": "GHRH analog for growth hormone release",
+            "category": "Growth Hormone",
+            "commonVials": [2, 5],
+            "doses": [
+                {
+                    "value": 100,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 200,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 300,
+                    "unit": "mcg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Growth hormone-releasing hormone analog that provides sustained GH release for enhanced recovery, body composition, and anti-aging benefits.",
+                "category": "GHRH Analog",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "100 – 300 mcg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "Daily"
+                    }
+                ],
+                "guide": {
+                    "description": "CJC-1295 is a **growth hormone-releasing hormone (GHRH) analog** that stimulates your pituitary to produce more growth hormone. It comes in two forms: **with DAC** (Drug Affinity Complex), which extends its half-life to about a week, and **without DAC**, which has a shorter duration.\n\nThe version without DAC is more commonly used in peptide protocols because it better preserves the natural pulsatile pattern of GH release. Typical dosing is **100 to 300 mcg daily**, usually injected before bed.\n\nIt's frequently paired with **Ipamorelin**, a growth hormone secretagogue that works through a complementary pathway. Together they amplify GH release more effectively than either one alone.",
+                    "onset": "**Improved sleep quality** is usually the first noticeable effect, within the first **1 to 2 weeks**. Vivid dreams are commonly reported. Recovery from workouts improves around **weeks 2 to 4**.\n\nBody composition changes (fat loss, lean mass) take longer, typically **2 to 3 months**. CJC-1295 works by increasing your own GH production rather than replacing it, so the effects are more gradual than exogenous HGH but also more physiologically natural.",
+                    "sideEffects": "**Water retention and flushing** are the most common. Some people get a head rush or tingling sensation after injection, especially with the DAC version. **Increased hunger** can occur since GH stimulates appetite.\n\nThe DAC version can cause prolonged GH elevation (the **\"GH bleed\"**), which is why many people prefer no-DAC. Joint pain and numbness or tingling in the hands are possible at higher doses. These are signs your GH levels may be running too high.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Lyophilized powder can be stored at room temperature. Reconstitute with bacteriostatic water and use within **28 days**.\n\nCJC-1295 without DAC is sometimes labeled as **\"Mod GRF 1-29\"** by suppliers. Same peptide, different name.",
+                    "aliases": "Mod GRF 1-29 (without DAC), CJC-1295 DAC, CJC with DAC, CJC no DAC, modified GRF"
+                }
+            }
+        },
+        "ipamorelin": {
+            "name": "Ipamorelin",
+            "description": "Growth hormone releasing peptide",
+            "category": "Growth Hormone",
+            "commonVials": [2, 5],
+            "doses": [
+                {
+                    "value": 100,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 200,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 300,
+                    "unit": "mcg"
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Selective growth hormone-releasing peptide that stimulates natural GH pulsatile release with minimal impact on cortisol and prolactin.",
+                "category": "Growth Hormone Secretagogue",
+                "blocks": [
+                    {
+                        "label": "Typical dose",
+                        "value": "100 – 300 mcg"
+                    },
+                    {
+                        "label": "Frequency",
+                        "value": "1–2× daily"
+                    }
+                ],
+                "guide": {
+                    "description": "Ipamorelin is a **selective growth hormone secretagogue** that stimulates GH release by mimicking ghrelin at the pituitary. What makes it stand out from older secretagogues like GHRP-6 or GHRP-2 is selectivity: it boosts growth hormone **without significantly raising cortisol or prolactin**.\n\nDosing is typically **100 to 300 mcg**, injected subcutaneously once or twice daily. Most people take it before bed to coincide with the body's natural GH pulse during sleep.\n\nIt's one of the milder GH peptides in terms of side effects, which is why it's commonly used as a first GH secretagogue. The most common protocol pairs it with **CJC-1295 (no DAC)** for a synergistic effect on growth hormone output.",
+                    "onset": "**Better sleep** within the first week or two is the most commonly reported early effect. Recovery and general well-being improvements follow over **weeks 2 to 4**. Body composition changes take **2 to 3 months**, similar to CJC-1295.\n\nBecause it's selective, the effects are subtler than GHRP-6 or GHRP-2. You won't get the intense hunger spikes those cause. Think of it as a gentle nudge to your GH production rather than a sledgehammer.",
+                    "sideEffects": "Very mild side effect profile compared to other GH secretagogues. Occasional **headache, lightheadedness, or injection site irritation**. Water retention is possible but less pronounced than with CJC-1295 or HGH.\n\n**No significant cortisol or prolactin increase** at normal doses, which is the main advantage over older alternatives. At very high doses, some people report tingling or numbness in hands, which signals GH levels are getting elevated.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder is stable at room temperature. Reconstitute with bacteriostatic water and use within **28 days**.\n\nIpamorelin is often sold pre-mixed with CJC-1295 in the same vial. If you have a combo vial, the reconstitution and storage guidelines are the same.",
+                    "aliases": "Ipamorelin acetate, IPA, IPAM"
+                }
+            }
+        },
+        "cjc-1295-ipamorelin": {
+            "name": "CJC / Ipamorelin",
+            "description": "GH secretagogue blend for recovery and anti-aging",
+            "category": "Growth Hormone",
+            "components": [
+                {
+                    "peptide": "ipamorelin",
+                    "mg": 3
+                },
+                {
+                    "peptide": "cjc-1295",
+                    "mg": 3
+                }
+            ],
+            "commonVials": [6, 10, 12],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Synergistic GH secretagogue blend combining CJC-1295 and Ipamorelin for enhanced growth hormone release, recovery, and anti-aging benefits.",
+                "category": "GH Secretagogue Blend",
+                "blocks": [
+                    {
+                        "label": "Ipamorelin",
+                        "value": "3 mg"
+                    },
+                    {
+                        "label": "CJC-1295",
+                        "value": "3 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "CJC-1295 and Ipamorelin is the most common **growth hormone secretagogue pairing**. The blend typically contains equal parts (3 mg CJC-1295 + 3 mg Ipamorelin, 6 mg total), though ratios vary by supplier.\n\nThe two peptides hit **different pathways**. CJC-1295 (without DAC) is a GHRH analog that tells your pituitary to produce more growth hormone. Ipamorelin mimics ghrelin at the pituitary to trigger GH release. Together they amplify GH output more effectively than either alone while preserving the body's natural pulsatile release pattern.\n\nThe typical protocol is **100 to 300 mcg of each** per injection, taken before bed to align with natural GH release during sleep. It's the go-to GH peptide protocol for people who want the recovery and anti-aging benefits of elevated growth hormone without jumping straight to exogenous HGH.",
+                    "onset": "**Improved sleep quality** is usually the first thing people notice, often within the first **1 to 2 weeks**. Vivid dreams are commonly reported. Recovery from workouts improves around **weeks 2 to 4**.\n\nBody composition changes (fat loss, better skin, lean mass) take longer, typically **2 to 3 months** of consistent nightly use. Because this blend stimulates your own GH production rather than replacing it, the effects are more gradual than exogenous HGH but also more physiologically natural. Some people report increased hunger early on, which is expected since both peptides stimulate GH pathways.",
+                    "sideEffects": "**Water retention and flushing** are the most common. Some people get a **head rush or tingling** after injection, which passes quickly. Increased appetite is possible since GH stimulates hunger.\n\nIpamorelin's main advantage is selectivity: it boosts growth hormone **without significantly raising cortisol or prolactin**, which is why this combination has a milder side effect profile than older secretagogues like GHRP-6. Numbness or tingling in the hands at higher doses means your GH levels may be running too high. Lower the dose if that happens.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder form is stable at room temperature. Reconstitute with bacteriostatic water, swirl gently, and use within **28 days**.\n\nCJC-1295 without DAC is sometimes labeled as **\"Mod GRF 1-29\"** by suppliers. If your vial says that, it's the same peptide.",
+                    "aliases": "CJC/Ipa, CJC-1295/Ipamorelin, Mod GRF/Ipamorelin, GH secretagogue blend"
+                }
+            }
+        },
+        "custom": {
+            "name": "Custom peptide",
+            "description": "User-defined peptide with custom parameters",
+            "category": "Custom / Other",
+            "commonVials": [2, 5, 10, 50],
+            "doses": [
+                {
+                    "value": 250,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 500,
+                    "unit": "mcg"
+                },
+                {
+                    "value": 1,
+                    "unit": "mg"
+                },
+                {
+                    "value": 2,
+                    "unit": "mg"
+                }
+            ],
+            "detail": null
+        }
+    },
+    "categories": [
+        {
+            "name": "Weight Loss / Metabolic",
+            "peptides": ["semaglutide", "tirzepatide", "retatrutide", "cagrilintide"]
+        },
+        {
+            "name": "Repair / Regeneration",
+            "peptides": ["bpc-157", "tb-500", "ghk-cu", "kpv"]
+        },
+        {
+            "name": "Cosmetic",
+            "peptides": ["melanotan-1", "melanotan-2"]
+        },
+        {
+            "name": "Growth Hormone",
+            "peptides": ["hgh", "cjc-1295", "ipamorelin"]
+        },
+        {
+            "name": "Blends",
+            "peptides": ["glow", "wolverine", "klow", "cjc-1295-ipamorelin"]
+        },
+        {
+            "name": "Custom / Other",
+            "peptides": ["pt-141", "custom"]
+        }
+    ]
+}
