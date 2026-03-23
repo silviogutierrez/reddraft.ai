@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import base64
 import json
+import os
 import re
 import subprocess
 import time
@@ -20,25 +22,108 @@ ACCOUNT = "ava@joyapptracker.com"
 AUTOMOD_SUBS = {"BodyOptimization", "BiohackingU"}
 
 
-def run(cmd: str) -> str:
+def gws_env() -> dict[str, str]:
+    return {**os.environ, "GOOGLE_WORKSPACE_CLI_ACCOUNT": ACCOUNT}
+
+
+def run_gws(args: list[str]) -> str:
     result = subprocess.run(
-        cmd, shell=True, capture_output=True, text=True, timeout=30
+        ["gws", *args],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        env=gws_env(),
     )
     return result.stdout.strip()
 
 
+def extract_email_body(payload: dict[str, Any]) -> str:
+    """Walk Gmail MIME payload tree to find and decode the text/plain body."""
+    if "parts" in payload:
+        for part in payload["parts"]:
+            result = extract_email_body(part)
+            if result:
+                return result
+    elif payload.get("mimeType") == "text/plain" and payload.get("body", {}).get(
+        "data"
+    ):
+        return base64.urlsafe_b64decode(payload["body"]["data"]).decode()
+    return ""
+
+
+def get_email_header(headers: list[dict[str, str]], name: str) -> str:
+    for h in headers:
+        if h["name"].lower() == name.lower():
+            return h["value"]
+    return ""
+
+
 def search_f5bot_emails(max_results: int = 20) -> list[dict[str, Any]]:
-    raw = run(
-        f'gog gmail messages search "from:f5bot is:unread" --max {max_results} --json --include-body --account {ACCOUNT}'
+    raw = run_gws(
+        [
+            "gmail",
+            "users",
+            "messages",
+            "list",
+            "--params",
+            json.dumps(
+                {
+                    "userId": "me",
+                    "q": "from:f5bot is:unread",
+                    "maxResults": max_results,
+                }
+            ),
+        ]
     )
     if not raw:
         return []
     try:
         data = json.loads(raw)
-        return data.get("messages", [])  # type: ignore[no-any-return]
     except json.JSONDecodeError:
-        print(f"Failed to parse email search results: {raw[:200]}")
+        print(f"Failed to parse message list: {raw[:200]}")
         return []
+
+    message_ids = [m["id"] for m in data.get("messages", [])]
+    if not message_ids:
+        return []
+
+    emails: list[dict[str, Any]] = []
+    for msg_id in message_ids:
+        msg_raw = run_gws(
+            [
+                "gmail",
+                "users",
+                "messages",
+                "get",
+                "--params",
+                json.dumps(
+                    {
+                        "userId": "me",
+                        "id": msg_id,
+                        "format": "full",
+                    }
+                ),
+            ]
+        )
+        if not msg_raw:
+            continue
+        try:
+            msg = json.loads(msg_raw)
+        except json.JSONDecodeError:
+            continue
+
+        headers = msg.get("payload", {}).get("headers", [])
+        emails.append(
+            {
+                "id": msg["id"],
+                "threadId": msg.get("threadId", msg["id"]),
+                "subject": get_email_header(headers, "Subject"),
+                "from": get_email_header(headers, "From"),
+                "body": extract_email_body(msg.get("payload", {})),
+            }
+        )
+
+    return emails
 
 
 def parse_f5bot_alert(body: str) -> list[dict[str, str]]:
@@ -99,9 +184,7 @@ def is_already_joyapp(alert: dict[str, str]) -> bool:
 
 
 def extract_reddit_thread_url(url: str) -> str:
-    match = re.match(
-        r"(https://www\.reddit\.com/r/[^/]+/comments/[^/]+/[^/]*/)", url
-    )
+    match = re.match(r"(https://www\.reddit\.com/r/[^/]+/comments/[^/]+/[^/]*/)", url)
     if match:
         return match.group(1)
     return url
@@ -113,9 +196,7 @@ def extract_post_id(url: str) -> str | None:
 
 
 def thread_already_in_queue(post_id: str) -> bool:
-    return Draft.objects.filter(
-        post_url__contains=f"/comments/{post_id}/"
-    ).exists()
+    return Draft.objects.filter(post_url__contains=f"/comments/{post_id}/").exists()
 
 
 def fetch_op_text(url: str) -> dict[str, str] | None:
@@ -159,9 +240,7 @@ def push_to_queue(alert: dict[str, str]) -> Draft | None:
         post_body = op["op_body"]
         post_author = op["op_author"]
         post_url = op["op_url"]
-        note_extra = (
-            f"F5Bot matched comment by u/{alert.get('post_author', '?')}."
-        )
+        note_extra = f"F5Bot matched comment by u/{alert.get('post_author', '?')}."
     else:
         post_title = alert.get("post_title", "")
         post_body = alert.get("post_body", "")
@@ -194,8 +273,17 @@ def push_to_queue(alert: dict[str, str]) -> Draft | None:
 
 def archive_email(message_id: str, thread_id: str | None = None) -> None:
     tid = thread_id or message_id
-    run(
-        f'gog gmail thread modify {tid} --remove "INBOX,UNREAD" --no-input --account {ACCOUNT}'
+    run_gws(
+        [
+            "gmail",
+            "users",
+            "threads",
+            "modify",
+            "--params",
+            json.dumps({"userId": "me", "id": tid}),
+            "--json",
+            json.dumps({"removeLabelIds": ["INBOX", "UNREAD"]}),
+        ]
     )
 
 

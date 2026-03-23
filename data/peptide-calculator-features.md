@@ -8,34 +8,39 @@ A web-based peptide reconstitution calculator that tells users exactly how much 
 
 ## Supported Peptides
 
-The calculator ships with a built-in database of 16 peptides organized into five categories:
+The calculator ships with a built-in database of 15 individual peptides and 4
+compound blends, organized into six categories:
 
 ### Weight Loss / Metabolic
-- **Semaglutide** — GLP-1 agonist (vials: 3, 5, 10, 20 mg)
-- **Tirzepatide** — Dual GLP-1/GIP agonist (vials: 5, 10, 15, 30, 60 mg)
-- **Retatrutide** — Triple agonist (vials: 10, 15, 20, 30 mg)
-- **Cagrilintide (Cagri)** — Amylin analog (vials: 5, 10, 20 mg)
+- **Semaglutide** (`semaglutide`) — GLP-1 agonist (vials: 3, 5, 10, 20 mg)
+- **Tirzepatide** (`tirzepatide`) — Dual GLP-1/GIP agonist (vials: 5, 10, 15, 30, 60 mg)
+- **Retatrutide** (`retatrutide`) — Triple agonist (vials: 10, 15, 20, 30 mg)
+- **Cagrilintide** (`cagrilintide`) — Amylin analog (vials: 5, 10, 20 mg)
 
 ### Repair / Regeneration
-- **BPC-157** — Tissue healing and gut repair (vials: 5, 10 mg)
-- **TB-500** — Injury recovery and flexibility (vials: 5, 10 mg)
-- **GHK-Cu** — Skin rejuvenation and wound healing (vials: 10, 50 mg)
-- **KPV** — Anti-inflammatory tripeptide (vials: 5, 10 mg)
-- **Glow** — GHK-Cu + BPC-157 + TB-500 compound blend
-- **Wolverine** — BPC-157 + TB-500 compound blend
-- **KLOW** — GHK-Cu + KPV + BPC-157 + TB-500 compound blend
+- **BPC-157** (`bpc-157`) — Tissue healing and gut repair (vials: 5, 10 mg)
+- **TB-500** (`tb-500`) — Injury recovery and flexibility (vials: 5, 10 mg)
+- **GHK-Cu** (`ghk-cu`) — Skin rejuvenation and wound healing (vials: 10, 50 mg)
+- **KPV** (`kpv`) — Anti-inflammatory tripeptide (vials: 5, 10 mg)
 
 ### Cosmetic
-- **Melanotan I** — Gradual tanning (vials: 10 mg)
-- **Melanotan II** — Rapid tanning and libido (vials: 10 mg)
+- **Melanotan I** (`melanotan-1`) — Gradual tanning (vials: 10 mg)
+- **Melanotan II** (`melanotan-2`) — Rapid tanning and libido (vials: 10 mg)
 
 ### Growth Hormone
-- **HGH** — Human Growth Hormone with IU support (vials: 4, 10, 12 mg)
+- **HGH** (`hgh`) — Human Growth Hormone with IU support (vials: 4, 10, 12 mg)
+- **CJC-1295** (`cjc-1295`) — GH secretagogue (vials: 2, 5 mg)
+- **Ipamorelin** (`ipamorelin`) — GH secretagogue (vials: 2, 5 mg)
+
+### Blends
+- **Glow** (`glow`) — GHK-Cu + BPC-157 + TB-500 compound blend
+- **Wolverine** (`wolverine`) — BPC-157 + TB-500 compound blend
+- **KLOW** (`klow`) — GHK-Cu + KPV + BPC-157 + TB-500 compound blend
+- **CJC / Ipamorelin** (`cjc-1295-ipamorelin`) — CJC-1295 + Ipamorelin compound blend
 
 ### Custom / Other
-- **PT-141** — Sexual health (vials: 10 mg)
-- **CJC-1295 + Ipamorelin** — GH secretagogue blend (vials: 6, 10, 12 mg)
-- **Custom peptide** — Fully user-defined peptide with custom parameters
+- **PT-141** (`pt-141`) — Sexual health (vials: 10 mg)
+- **Custom peptide** (`custom`) — Fully user-defined peptide with custom parameters
 
 ---
 
@@ -69,9 +74,9 @@ A full-screen animated modal (with gradient overlay and breathing animation) exp
 
 ## Compound Blend Support
 
-Three pre-configured compound peptides (Glow, Wolverine, KLOW) demonstrate the calculator's multi-component blend capabilities:
+Four pre-configured compound blends (Glow, Wolverine, KLOW, CJC/Ipamorelin) demonstrate the calculator's multi-component blend capabilities:
 
-- **Pre-set ratios**: Each blend has a default total vial size with fixed component ratios (e.g., Glow = 50 mg GHK-Cu / 10 mg BPC-157 / 10 mg TB-500)
+- **Pre-set ratios**: Each blend has default component amounts (e.g., Glow = 50 mg GHK-Cu / 10 mg BPC-157 / 10 mg TB-500, CJC/Ipamorelin = 3 mg each)
 - **Custom component amounts**: Users can tap "Other" to enter individual mg amounts for each component in the blend, overriding the default ratios
 - **Anchor-based dosing**: Doses are specified in terms of the primary (anchor) component, and the calculator automatically shows the proportional dose breakdown for every component in the blend
 - **Dose breakdown display**: A detailed breakdown appears showing exactly how much of each component the user will receive per injection
@@ -178,29 +183,40 @@ All parameters are optional. Only `peptide` is needed to activate the calculator
 | `dose_unit` | No       | Peptide's native unit| Unit for dose: `mg`, `mcg`, or `IU`              |
 | `syringe`   | No       | None (user must pick) | Syringe capacity: `0.3`, `0.5`, or `1`          |
 | `water`     | No       | Auto mode            | Water amount in ml. When present, the calculator opens in manual mode instead of auto mode (see below) |
-| `compound_<key>` | No | Default blend ratios | Per-component mg amount, where `<key>` is the peptide key (e.g., `compound_ghkcu=50&compound_bpc157=10`) |
+| `compound_<key>` | No | Default blend ratios | Per-component mg amount, where `<key>` is the hyphenated peptide key (e.g., `compound_ghk-cu=50&compound_bpc-157=10`) |
 
 ### Peptide Keys
+
+All keys use hyphenated format.
+
+**Individual peptides:**
 
 | Key                  | Peptide Name              |
 |----------------------|---------------------------|
 | `semaglutide`        | Semaglutide               |
 | `tirzepatide`        | Tirzepatide               |
 | `retatrutide`        | Retatrutide               |
-| `cagrilintide`       | Cagrilintide (Cagri)      |
-| `bpc157`             | BPC-157                   |
-| `tb500`              | TB-500                    |
-| `ghkcu`              | GHK-Cu                    |
+| `cagrilintide`       | Cagrilintide              |
+| `bpc-157`            | BPC-157                   |
+| `tb-500`             | TB-500                    |
+| `ghk-cu`             | GHK-Cu                    |
 | `kpv`                | KPV                       |
-| `glow`               | Glow (GHK + BPC + TB)     |
-| `wolverine`          | Wolverine (BPC + TB)      |
-| `klow`               | KLOW (GHK + KPV + BPC + TB) |
-| `melanotani`         | Melanotan I               |
-| `melanotanii`        | Melanotan II              |
+| `melanotan-1`        | Melanotan I               |
+| `melanotan-2`        | Melanotan II              |
 | `hgh`                | HGH                       |
-| `pt141`              | PT-141                    |
-| `cjc1295_ipamorelin` | CJC-1295 + Ipamorelin     |
+| `cjc-1295`           | CJC-1295                  |
+| `ipamorelin`         | Ipamorelin                |
+| `pt-141`             | PT-141                    |
 | `custom`             | Custom peptide             |
+
+**Compound blends:**
+
+| Key                    | Blend Name                  | Components                    |
+|------------------------|-----------------------------|-------------------------------|
+| `glow`                 | Glow                        | GHK-Cu + BPC-157 + TB-500    |
+| `wolverine`            | Wolverine                   | BPC-157 + TB-500              |
+| `klow`                 | KLOW                        | GHK-Cu + KPV + BPC-157 + TB-500 |
+| `cjc-1295-ipamorelin`  | CJC / Ipamorelin            | CJC-1295 + Ipamorelin         |
 
 ### Pre-Filling Strategy: Leave Fields Out to Force User Action
 
@@ -231,25 +247,25 @@ Opens with Semaglutide at 1 mg dose pre-filled. User only needs to enter their v
 
 **Compound blend with custom component amounts:**
 ```
-?peptide=glow&compound_ghkcu=50&compound_bpc157=10&compound_tb500=10
+?peptide=glow&compound_ghk-cu=50&compound_bpc-157=10&compound_tb-500=10
 ```
 Opens the Glow blend with "Other" mode active and each component's mg pre-filled. Omitting the compound params (and `vial`) leaves the component inputs empty for the user to fill.
 
 **Compound blend with dose and syringe — full result:**
 ```
-?peptide=glow&compound_ghkcu=50&compound_bpc157=10&compound_tb500=10&dose=500&dose_unit=mcg&syringe=0.5
+?peptide=glow&compound_ghk-cu=50&compound_bpc-157=10&compound_tb-500=10&dose=500&dose_unit=mcg&syringe=0.5
 ```
 Opens Glow with custom component amounts, a 500 mcg dose, and 0.5 ml syringe. The user sees a recommendation immediately.
 
 **Wolverine blend, user picks dose and syringe:**
 ```
-?peptide=wolverine&compound_bpc157=5&compound_tb500=5
+?peptide=wolverine&compound_bpc-157=5&compound_tb-500=5
 ```
 Opens Wolverine with 5 mg of each component pre-filled. Dose and syringe are left for the user to select.
 
 **KLOW blend with all four components:**
 ```
-?peptide=klow&compound_ghkcu=50&compound_kpv=10&compound_bpc157=10&compound_tb500=10&dose=250&dose_unit=mcg&syringe=1
+?peptide=klow&compound_ghk-cu=50&compound_kpv=10&compound_bpc-157=10&compound_tb-500=10&dose=250&dose_unit=mcg&syringe=1
 ```
 Opens the full KLOW blend with all components specified and a complete calculation ready.
 
@@ -258,6 +274,12 @@ Opens the full KLOW blend with all components specified and a complete calculati
 ?peptide=wolverine&vial=20&dose=500&dose_unit=mcg&syringe=0.5
 ```
 Opens Wolverine using the 20 mg preset vial instead of custom component amounts. Since `vial` is present, the compound params are ignored and the default ratio is used.
+
+**CJC-1295 + Ipamorelin blend:**
+```
+?peptide=cjc-1295-ipamorelin&compound_cjc-1295=3&compound_ipamorelin=3&dose=200&dose_unit=mcg&syringe=1
+```
+Opens the CJC / Ipamorelin blend with 3 mg of each component and a 200 mcg dose.
 
 **HGH with IU units:**
 ```
@@ -283,13 +305,13 @@ A 60 mg Tirzepatide vial with a 5 mg dose. The high vial size limits feasible wa
 
 **Manual mode — user already knows their water amount:**
 ```
-?peptide=bpc157&vial=5&dose=500&dose_unit=mcg&syringe=0.5&water=2
+?peptide=bpc-157&vial=5&dose=500&dose_unit=mcg&syringe=0.5&water=2
 ```
 The presence of `water` switches the calculator from auto mode (where it recommends the best water amount) to manual mode (where the user specifies their own). Here the user has already added 2 ml to their vial and just wants to know how many units to draw.
 
 **Manual mode — compound blend with known water:**
 ```
-?peptide=glow&compound_ghkcu=50&compound_bpc157=10&compound_tb500=10&dose=500&dose_unit=mcg&syringe=0.5&water=1.5
+?peptide=glow&compound_ghk-cu=50&compound_bpc-157=10&compound_tb-500=10&dose=500&dose_unit=mcg&syringe=0.5&water=1.5
 ```
 Same idea for a compound blend. The user mixed their Glow vial with 1.5 ml of water and wants the draw volume. Omitting `water` from either of these URLs would switch back to auto mode, where the calculator recommends the optimal water amount.
 
@@ -298,7 +320,7 @@ Same idea for a compound blend. The user mixed their Glow vial with 1.5 ml of wa
 - When `peptide` is present but `syringe` is absent, the syringe defaults to **unselected** (user must pick). When `peptide` is absent entirely, the syringe defaults to 1 ml.
 - `dose_unit` defaults to the peptide's most natural unit when omitted (e.g., `mg` for Semaglutide, `mcg` for BPC-157, `IU` for HGH).
 - `vial_unit` defaults to `mg` when omitted.
-- For compound blends, `vial` and `compound_<key>` params are mutually exclusive. If `vial` is present, it selects a preset total vial size. If compound params are present (and `vial` is absent), it activates "Other" mode with per-component inputs.
+- For compound blends, `vial` and `compound_<key>` params are mutually exclusive. If `vial` is present, it selects a preset total vial size. If compound params are present (and `vial` is absent), it activates "Other" mode with per-component inputs. The `<key>` in `compound_<key>` uses the same hyphenated peptide key (e.g., `compound_bpc-157`, `compound_ghk-cu`).
 - The `water` parameter controls auto vs. manual mode. When absent, the calculator recommends the optimal water amount (auto mode). When present, the calculator uses the specified water amount and shows the resulting draw volume (manual mode). Manual mode is useful when a user has already reconstituted their vial and just needs to know how many units to draw.
 - The URL updates in real time as the user interacts with the calculator, so any shared link always reflects the latest state.
 

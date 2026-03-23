@@ -1,4 +1,6 @@
+import json
 import os
+import subprocess
 from pathlib import Path
 
 import django_stubs_ext
@@ -126,5 +128,26 @@ CROWDREPLY_PROJECT_ID = ""
 
 # Anthropic
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+
+
+def get_claude_oauth_token() -> str:
+    raw = subprocess.run(
+        [
+            "security",
+            "find-generic-password",
+            "-s",
+            "Claude Code-credentials",
+            "-a",
+            "silviogutierrez",
+            "-w",
+        ],
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    data = json.loads(raw)
+    return data["claudeAiOauth"]["accessToken"]
+
+
+CLAUDE_CODE_OAUTH_TOKEN = get_claude_oauth_token()
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

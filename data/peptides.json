@@ -297,7 +297,7 @@
                     "onset": "TB-500 tends to be slower than BPC-157. Most people start noticing reduced stiffness and improved mobility around **weeks 2 to 4**. A typical loading phase runs **4 to 6 weeks** with twice-weekly injections, then maintenance at once weekly or less.\n\nFor acute injuries, the response is usually faster. For chronic issues like long-standing tendinitis, give it the full loading phase before judging whether it's working.",
                     "sideEffects": "Generally well tolerated. The most common report is a **temporary head rush** or slight lethargy after injection. Some people get mild headaches. Injection site redness or irritation can happen.\n\nLike BPC-157, there's a theoretical **angiogenesis concern**. The original Thymosin Beta-4 research flagged potential interactions with certain cancers, though this hasn't been definitively established with TB-500. Worth discussing with your provider if you have a relevant history.",
                     "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder form can be stored at room temperature. Once reconstituted with bacteriostatic water, use within **28 days**.\n\nTB-500 doses are larger than most peptides (milligrams rather than micrograms), so you'll go through vials faster. Plan your water volume accordingly so you're not drawing huge volumes per injection.",
-                    "aliases": "Thymosin Beta-4 fragment, TB4, T\u03b24"
+                    "aliases": "Thymosin Beta-4 fragment, TB4, Tβ4"
                 }
             }
         },
@@ -387,144 +387,6 @@
                     "sideEffects": "KPV is well tolerated overall. Side effects are rarely reported. Some people experience **mild fatigue or headache**. Because it's derived from alpha-MSH, there's a theoretical potential for slight skin darkening at higher doses, though this is far less pronounced than with Melanotan peptides.\n\nIf you're taking **immunosuppressive medications**, talk to your doctor before using KPV. Modulating NF-kB on top of existing immunosuppression could be too much.",
                     "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Lyophilized powder is stable at room temperature. Reconstitute with bacteriostatic water, use within **28 days**.\n\nIf using oral capsules, store them in a cool, dry place. No reconstitution needed for that form.",
                     "aliases": "Lys-Pro-Val, alpha-MSH fragment, KPV tripeptide"
-                }
-            }
-        },
-        "glow": {
-            "name": "Glow (GHK + BPC + TB)",
-            "description": "Comprehensive tissue repair",
-            "category": "Repair / Regeneration",
-            "components": [
-                {
-                    "peptide": "ghk-cu",
-                    "mg": 50
-                },
-                {
-                    "peptide": "bpc-157",
-                    "mg": 10
-                },
-                {
-                    "peptide": "tb-500",
-                    "mg": 10
-                }
-            ],
-            "commonVials": [70],
-            "detail": {
-                "lastmod": "2026-03-09",
-                "description": "Comprehensive tissue repair blend combining GHK-Cu, BPC-157, and TB-500 for synergistic healing, skin rejuvenation, and recovery.",
-                "category": "Healing Blend",
-                "blocks": [
-                    {
-                        "label": "GHK-Cu",
-                        "value": "50 mg"
-                    },
-                    {
-                        "label": "BPC-157",
-                        "value": "10 mg"
-                    },
-                    {
-                        "label": "TB-500",
-                        "value": "10 mg"
-                    }
-                ],
-                "guide": {
-                    "description": "The Glow blend is the Wolverine stack plus **GHK-Cu** (50 mg). Adding the copper peptide shifts the focus from pure injury repair toward **tissue rejuvenation and skin quality**.\n\nGHK-Cu stimulates **collagen and glycosaminoglycan synthesis**, the structural proteins that keep skin firm and joints cushioned. Paired with the wound-healing properties of BPC-157 and the cell-migration effects of TB-500, you get tissue repair and collagen regeneration in one vial.\n\nPeople use it for post-procedure recovery (microneedling, surgery), anti-aging, and chronic injuries where tissue quality has degraded. If skin or connective tissue appearance matters to you on top of healing, this is the better pick over the Wolverine stack.",
-                    "onset": "The BPC-157 and TB-500 components follow the same timeline as the Wolverine stack: initial improvement within **the first 1 to 2 weeks**, with structural repair building over **weeks 2 to 4**.\n\nThe GHK-Cu component is slower. Skin texture and firmness improvements typically show up around **weeks 4 to 6**. Collagen remodeling takes time. For post-procedure recovery (after microneedling or laser treatments), the healing acceleration is usually noticeable within **the first couple of weeks**.",
-                    "sideEffects": "Side effects are similar to the Wolverine stack: mild **nausea, headache, lightheadedness**, and injection site irritation. The GHK-Cu component can cause a **metallic taste** after injection, related to the copper.\n\nThe reconstituted solution may have a faint **blue tint** from the copper peptide. That's normal. If the color is unusually strong or changes over time, something may be off with the vial. Same **angiogenesis caveat** as the Wolverine stack.",
-                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** GHK-Cu is **light-sensitive**, so store the vial in the fridge or wrapped to avoid direct light. Reconstitute with bacteriostatic water and use within **28 days**.\n\nThe total vial content is 70 mg, with the GHK-Cu making up the bulk. Pay attention to your reconstitution math so your per-dose volume stays manageable.",
-                    "aliases": "Glow stack, GHK/BPC/TB blend, rejuvenation blend, GHK-Cu + Wolverine"
-                }
-            }
-        },
-        "wolverine": {
-            "name": "Wolverine (BPC + TB)",
-            "description": "Tissue repair and recovery",
-            "category": "Repair / Regeneration",
-            "components": [
-                {
-                    "peptide": "bpc-157",
-                    "mg": 10
-                },
-                {
-                    "peptide": "tb-500",
-                    "mg": 10
-                }
-            ],
-            "commonVials": [20],
-            "detail": {
-                "lastmod": "2026-03-09",
-                "description": "Tissue repair blend combining BPC-157 and TB-500 for accelerated injury recovery, inflammation reduction, and healing.",
-                "category": "Healing Blend",
-                "blocks": [
-                    {
-                        "label": "BPC-157",
-                        "value": "10 mg"
-                    },
-                    {
-                        "label": "TB-500",
-                        "value": "10 mg"
-                    }
-                ],
-                "guide": {
-                    "description": "The Wolverine stack is probably the most well-known healing peptide combination. It pairs **BPC-157** (10 mg) and **TB-500** (10 mg) in a single vial, targeting tissue repair through two different mechanisms.\n\nBPC-157 promotes **angiogenesis**, the formation of new blood vessels, which brings more blood flow to injured tissue. TB-500 works through **cell migration and differentiation**, helping cells get to damaged areas and rebuild. You're attacking an injury from two angles at once.\n\nPeople use it for tendon and ligament injuries, post-surgical recovery, muscle tears, and chronic joint pain. Having both peptides in one vial simplifies the injection process. Typical protocols run **4 to 8 weeks**, with injections close to the injury site or subcutaneously in the abdomen for systemic effects.",
-                    "onset": "BPC-157 tends to act faster than TB-500. Many people notice initial improvement within **the first week**, especially for inflammatory symptoms. The TB-500 component kicks in around **weeks 2 to 4**, contributing more to structural repair and flexibility.\n\nFor acute injuries (a recent muscle tear or post-surgery), the response is usually faster than for chronic issues like long-standing tendinitis. Give the blend a full **4 to 6 weeks** before deciding if it's working. The effects are cumulative.",
-                    "sideEffects": "Both peptides are generally well tolerated. The most commonly reported effects are mild: **occasional nausea, headache, or dizziness** from the BPC-157 component, and **temporary lightheadedness or lethargy** from the TB-500 component. Injection site irritation can happen with either.\n\nThe main theoretical concern is **angiogenesis**. Both BPC-157 and TB-500 promote new blood vessel growth, which could be problematic if you have existing tumors or a relevant cancer history. No human clinical trials have confirmed this risk, but it's worth discussing with your provider.",
-                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Lyophilized powder is stable at room temperature before reconstitution. Add bacteriostatic water, swirl gently, and use within **28 days**.\n\nThe total vial content is 20 mg and doses are in the milligram range, so plan your water volume so you're not drawing huge volumes per injection.",
-                    "aliases": "Wolverine stack, BPC/TB stack, BPC-157 + TB-500, healing stack"
-                }
-            }
-        },
-        "klow": {
-            "name": "KLOW (GHK + KPV + BPC + TB)",
-            "description": "Anti-inflammatory tissue repair",
-            "category": "Repair / Regeneration",
-            "components": [
-                {
-                    "peptide": "ghk-cu",
-                    "mg": 50
-                },
-                {
-                    "peptide": "kpv",
-                    "mg": 10
-                },
-                {
-                    "peptide": "bpc-157",
-                    "mg": 10
-                },
-                {
-                    "peptide": "tb-500",
-                    "mg": 10
-                }
-            ],
-            "commonVials": [80],
-            "detail": {
-                "lastmod": "2026-03-09",
-                "description": "Anti-inflammatory tissue repair blend combining GHK-Cu, KPV, BPC-157, and TB-500 for comprehensive healing with inflammation control.",
-                "category": "Healing Blend",
-                "blocks": [
-                    {
-                        "label": "GHK-Cu",
-                        "value": "50 mg"
-                    },
-                    {
-                        "label": "KPV",
-                        "value": "10 mg"
-                    },
-                    {
-                        "label": "BPC-157",
-                        "value": "10 mg"
-                    },
-                    {
-                        "label": "TB-500",
-                        "value": "10 mg"
-                    }
-                ],
-                "guide": {
-                    "description": "KLOW takes the Glow blend and adds **KPV** (10 mg), an anti-inflammatory tripeptide derived from alpha-MSH. So you get GHK-Cu (50 mg), KPV (10 mg), BPC-157 (10 mg), and TB-500 (10 mg) in one vial.\n\nThe KPV component targets **NF-kB**, one of the body's main inflammatory signaling pathways. Adding it means you're repairing tissue, building collagen, and actively dampening the inflammatory response that can slow healing and cause chronic pain.\n\nThis blend makes the most sense when **inflammation is a primary concern**: autoimmune-related joint issues, gut inflammation alongside tissue healing, or recovery where chronic inflammation is part of the problem. If you have a straightforward tendon injury without much systemic inflammation, the Wolverine or Glow blends are probably enough.",
-                    "onset": "The healing timeline matches the Glow blend: BPC-157 effects within **the first week or two**, TB-500 around **weeks 2 to 4**, and GHK-Cu skin and tissue quality improvements around **weeks 4 to 6**.\n\nKPV's anti-inflammatory effects show up within **1 to 2 weeks**, particularly for gut-related inflammation like bloating or discomfort. Broader systemic benefits take closer to **3 to 4 weeks** of consistent use. Having KPV handle the inflammation while the other components handle repair can speed things up compared to the Glow blend alone.",
-                    "sideEffects": "Same profile as the Glow blend, plus the KPV-specific considerations. KPV is well tolerated, with **mild fatigue or headache** occasionally reported. Because it's derived from alpha-MSH, there's a theoretical potential for slight **skin darkening** at higher doses, though far less pronounced than with Melanotan peptides.\n\nIf you're taking **immunosuppressive medications**, talk to your doctor before using this blend. KPV modulates NF-kB, and layering that on top of existing immunosuppression could be too much.",
-                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Like the Glow blend, the GHK-Cu component makes this **light-sensitive**, so keep it in the fridge or wrapped. Reconstitute with bacteriostatic water and use within **28 days**.\n\nThe total vial content is 80 mg. With four components, getting your reconstitution volume right matters for keeping per-dose draw volumes reasonable.",
-                    "aliases": "KLOW stack, KPV + Glow, anti-inflammatory healing blend, GHK/KPV/BPC/TB blend"
                 }
             }
         },
@@ -793,44 +655,6 @@
                 }
             }
         },
-        "cjc-1295-ipamorelin": {
-            "name": "CJC / Ipamorelin",
-            "description": "GH secretagogue blend for recovery and anti-aging",
-            "category": "Growth Hormone",
-            "components": [
-                {
-                    "peptide": "ipamorelin",
-                    "mg": 3
-                },
-                {
-                    "peptide": "cjc-1295",
-                    "mg": 3
-                }
-            ],
-            "commonVials": [6, 10, 12],
-            "detail": {
-                "lastmod": "2026-03-09",
-                "description": "Synergistic GH secretagogue blend combining CJC-1295 and Ipamorelin for enhanced growth hormone release, recovery, and anti-aging benefits.",
-                "category": "GH Secretagogue Blend",
-                "blocks": [
-                    {
-                        "label": "Ipamorelin",
-                        "value": "3 mg"
-                    },
-                    {
-                        "label": "CJC-1295",
-                        "value": "3 mg"
-                    }
-                ],
-                "guide": {
-                    "description": "CJC-1295 and Ipamorelin is the most common **growth hormone secretagogue pairing**. The blend typically contains equal parts (3 mg CJC-1295 + 3 mg Ipamorelin, 6 mg total), though ratios vary by supplier.\n\nThe two peptides hit **different pathways**. CJC-1295 (without DAC) is a GHRH analog that tells your pituitary to produce more growth hormone. Ipamorelin mimics ghrelin at the pituitary to trigger GH release. Together they amplify GH output more effectively than either alone while preserving the body's natural pulsatile release pattern.\n\nThe typical protocol is **100 to 300 mcg of each** per injection, taken before bed to align with natural GH release during sleep. It's the go-to GH peptide protocol for people who want the recovery and anti-aging benefits of elevated growth hormone without jumping straight to exogenous HGH.",
-                    "onset": "**Improved sleep quality** is usually the first thing people notice, often within the first **1 to 2 weeks**. Vivid dreams are commonly reported. Recovery from workouts improves around **weeks 2 to 4**.\n\nBody composition changes (fat loss, better skin, lean mass) take longer, typically **2 to 3 months** of consistent nightly use. Because this blend stimulates your own GH production rather than replacing it, the effects are more gradual than exogenous HGH but also more physiologically natural. Some people report increased hunger early on, which is expected since both peptides stimulate GH pathways.",
-                    "sideEffects": "**Water retention and flushing** are the most common. Some people get a **head rush or tingling** after injection, which passes quickly. Increased appetite is possible since GH stimulates hunger.\n\nIpamorelin's main advantage is selectivity: it boosts growth hormone **without significantly raising cortisol or prolactin**, which is why this combination has a milder side effect profile than older secretagogues like GHRP-6. Numbness or tingling in the hands at higher doses means your GH levels may be running too high. Lower the dose if that happens.",
-                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder form is stable at room temperature. Reconstitute with bacteriostatic water, swirl gently, and use within **28 days**.\n\nCJC-1295 without DAC is sometimes labeled as **\"Mod GRF 1-29\"** by suppliers. If your vial says that, it's the same peptide.",
-                    "aliases": "CJC/Ipa, CJC-1295/Ipamorelin, Mod GRF/Ipamorelin, GH secretagogue blend"
-                }
-            }
-        },
         "custom": {
             "name": "Custom peptide",
             "description": "User-defined peptide with custom parameters",
@@ -855,6 +679,227 @@
                 }
             ],
             "detail": null
+        }
+    },
+    "blends": {
+        "glow": {
+            "name": "Glow (GHK + BPC + TB)",
+            "description": "Comprehensive tissue repair",
+            "category": "Repair / Regeneration",
+            "components": [
+                {
+                    "peptide": "ghk-cu",
+                    "mg": 50
+                },
+                {
+                    "peptide": "bpc-157",
+                    "mg": 10
+                },
+                {
+                    "peptide": "tb-500",
+                    "mg": 10
+                }
+            ],
+            "blendVials": [
+                {
+                    "components": {
+                        "ghk-cu": 50,
+                        "bpc-157": 10,
+                        "tb-500": 10
+                    }
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Comprehensive tissue repair blend combining GHK-Cu, BPC-157, and TB-500 for synergistic healing, skin rejuvenation, and recovery.",
+                "category": "Healing Blend",
+                "blocks": [
+                    {
+                        "label": "GHK-Cu",
+                        "value": "50 mg"
+                    },
+                    {
+                        "label": "BPC-157",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "TB-500",
+                        "value": "10 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "The Glow blend is the Wolverine stack plus **GHK-Cu** (50 mg). Adding the copper peptide shifts the focus from pure injury repair toward **tissue rejuvenation and skin quality**.\n\nGHK-Cu stimulates **collagen and glycosaminoglycan synthesis**, the structural proteins that keep skin firm and joints cushioned. Paired with the wound-healing properties of BPC-157 and the cell-migration effects of TB-500, you get tissue repair and collagen regeneration in one vial.\n\nPeople use it for post-procedure recovery (microneedling, surgery), anti-aging, and chronic injuries where tissue quality has degraded. If skin or connective tissue appearance matters to you on top of healing, this is the better pick over the Wolverine stack.",
+                    "onset": "The BPC-157 and TB-500 components follow the same timeline as the Wolverine stack: initial improvement within **the first 1 to 2 weeks**, with structural repair building over **weeks 2 to 4**.\n\nThe GHK-Cu component is slower. Skin texture and firmness improvements typically show up around **weeks 4 to 6**. Collagen remodeling takes time. For post-procedure recovery (after microneedling or laser treatments), the healing acceleration is usually noticeable within **the first couple of weeks**.",
+                    "sideEffects": "Side effects are similar to the Wolverine stack: mild **nausea, headache, lightheadedness**, and injection site irritation. The GHK-Cu component can cause a **metallic taste** after injection, related to the copper.\n\nThe reconstituted solution may have a faint **blue tint** from the copper peptide. That's normal. If the color is unusually strong or changes over time, something may be off with the vial. Same **angiogenesis caveat** as the Wolverine stack.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** GHK-Cu is **light-sensitive**, so store the vial in the fridge or wrapped to avoid direct light. Reconstitute with bacteriostatic water and use within **28 days**.\n\nThe total vial content is 70 mg, with the GHK-Cu making up the bulk. Pay attention to your reconstitution math so your per-dose volume stays manageable.",
+                    "aliases": "Glow stack, GHK/BPC/TB blend, rejuvenation blend, GHK-Cu + Wolverine"
+                }
+            }
+        },
+        "wolverine": {
+            "name": "Wolverine (BPC + TB)",
+            "description": "Tissue repair and recovery",
+            "category": "Repair / Regeneration",
+            "components": [
+                {
+                    "peptide": "bpc-157",
+                    "mg": 10
+                },
+                {
+                    "peptide": "tb-500",
+                    "mg": 10
+                }
+            ],
+            "blendVials": [
+                {
+                    "components": {
+                        "bpc-157": 10,
+                        "tb-500": 10
+                    }
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Tissue repair blend combining BPC-157 and TB-500 for accelerated injury recovery, inflammation reduction, and healing.",
+                "category": "Healing Blend",
+                "blocks": [
+                    {
+                        "label": "BPC-157",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "TB-500",
+                        "value": "10 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "The Wolverine stack is probably the most well-known healing peptide combination. It pairs **BPC-157** (10 mg) and **TB-500** (10 mg) in a single vial, targeting tissue repair through two different mechanisms.\n\nBPC-157 promotes **angiogenesis**, the formation of new blood vessels, which brings more blood flow to injured tissue. TB-500 works through **cell migration and differentiation**, helping cells get to damaged areas and rebuild. You're attacking an injury from two angles at once.\n\nPeople use it for tendon and ligament injuries, post-surgical recovery, muscle tears, and chronic joint pain. Having both peptides in one vial simplifies the injection process. Typical protocols run **4 to 8 weeks**, with injections close to the injury site or subcutaneously in the abdomen for systemic effects.",
+                    "onset": "BPC-157 tends to act faster than TB-500. Many people notice initial improvement within **the first week**, especially for inflammatory symptoms. The TB-500 component kicks in around **weeks 2 to 4**, contributing more to structural repair and flexibility.\n\nFor acute injuries (a recent muscle tear or post-surgery), the response is usually faster than for chronic issues like long-standing tendinitis. Give the blend a full **4 to 6 weeks** before deciding if it's working. The effects are cumulative.",
+                    "sideEffects": "Both peptides are generally well tolerated. The most commonly reported effects are mild: **occasional nausea, headache, or dizziness** from the BPC-157 component, and **temporary lightheadedness or lethargy** from the TB-500 component. Injection site irritation can happen with either.\n\nThe main theoretical concern is **angiogenesis**. Both BPC-157 and TB-500 promote new blood vessel growth, which could be problematic if you have existing tumors or a relevant cancer history. No human clinical trials have confirmed this risk, but it's worth discussing with your provider.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Lyophilized powder is stable at room temperature before reconstitution. Add bacteriostatic water, swirl gently, and use within **28 days**.\n\nThe total vial content is 20 mg and doses are in the milligram range, so plan your water volume so you're not drawing huge volumes per injection.",
+                    "aliases": "Wolverine stack, BPC/TB stack, BPC-157 + TB-500, healing stack"
+                }
+            }
+        },
+        "klow": {
+            "name": "KLOW (GHK + KPV + BPC + TB)",
+            "description": "Anti-inflammatory tissue repair",
+            "category": "Repair / Regeneration",
+            "components": [
+                {
+                    "peptide": "ghk-cu",
+                    "mg": 50
+                },
+                {
+                    "peptide": "kpv",
+                    "mg": 10
+                },
+                {
+                    "peptide": "bpc-157",
+                    "mg": 10
+                },
+                {
+                    "peptide": "tb-500",
+                    "mg": 10
+                }
+            ],
+            "blendVials": [
+                {
+                    "components": {
+                        "ghk-cu": 50,
+                        "kpv": 10,
+                        "bpc-157": 10,
+                        "tb-500": 10
+                    }
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Anti-inflammatory tissue repair blend combining GHK-Cu, KPV, BPC-157, and TB-500 for comprehensive healing with inflammation control.",
+                "category": "Healing Blend",
+                "blocks": [
+                    {
+                        "label": "GHK-Cu",
+                        "value": "50 mg"
+                    },
+                    {
+                        "label": "KPV",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "BPC-157",
+                        "value": "10 mg"
+                    },
+                    {
+                        "label": "TB-500",
+                        "value": "10 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "KLOW takes the Glow blend and adds **KPV** (10 mg), an anti-inflammatory tripeptide derived from alpha-MSH. So you get GHK-Cu (50 mg), KPV (10 mg), BPC-157 (10 mg), and TB-500 (10 mg) in one vial.\n\nThe KPV component targets **NF-kB**, one of the body's main inflammatory signaling pathways. Adding it means you're repairing tissue, building collagen, and actively dampening the inflammatory response that can slow healing and cause chronic pain.\n\nThis blend makes the most sense when **inflammation is a primary concern**: autoimmune-related joint issues, gut inflammation alongside tissue healing, or recovery where chronic inflammation is part of the problem. If you have a straightforward tendon injury without much systemic inflammation, the Wolverine or Glow blends are probably enough.",
+                    "onset": "The healing timeline matches the Glow blend: BPC-157 effects within **the first week or two**, TB-500 around **weeks 2 to 4**, and GHK-Cu skin and tissue quality improvements around **weeks 4 to 6**.\n\nKPV's anti-inflammatory effects show up within **1 to 2 weeks**, particularly for gut-related inflammation like bloating or discomfort. Broader systemic benefits take closer to **3 to 4 weeks** of consistent use. Having KPV handle the inflammation while the other components handle repair can speed things up compared to the Glow blend alone.",
+                    "sideEffects": "Same profile as the Glow blend, plus the KPV-specific considerations. KPV is well tolerated, with **mild fatigue or headache** occasionally reported. Because it's derived from alpha-MSH, there's a theoretical potential for slight **skin darkening** at higher doses, though far less pronounced than with Melanotan peptides.\n\nIf you're taking **immunosuppressive medications**, talk to your doctor before using this blend. KPV modulates NF-kB, and layering that on top of existing immunosuppression could be too much.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Like the Glow blend, the GHK-Cu component makes this **light-sensitive**, so keep it in the fridge or wrapped. Reconstitute with bacteriostatic water and use within **28 days**.\n\nThe total vial content is 80 mg. With four components, getting your reconstitution volume right matters for keeping per-dose draw volumes reasonable.",
+                    "aliases": "KLOW stack, KPV + Glow, anti-inflammatory healing blend, GHK/KPV/BPC/TB blend"
+                }
+            }
+        },
+        "cjc-1295-ipamorelin": {
+            "name": "CJC / Ipamorelin",
+            "description": "GH secretagogue blend for recovery and anti-aging",
+            "category": "Growth Hormone",
+            "components": [
+                {
+                    "peptide": "ipamorelin",
+                    "mg": 3
+                },
+                {
+                    "peptide": "cjc-1295",
+                    "mg": 3
+                }
+            ],
+            "blendVials": [
+                {
+                    "components": {
+                        "ipamorelin": 3,
+                        "cjc-1295": 3
+                    }
+                },
+                {
+                    "components": {
+                        "ipamorelin": 5,
+                        "cjc-1295": 5
+                    }
+                },
+                {
+                    "components": {
+                        "ipamorelin": 6,
+                        "cjc-1295": 6
+                    }
+                }
+            ],
+            "detail": {
+                "lastmod": "2026-03-09",
+                "description": "Synergistic GH secretagogue blend combining CJC-1295 and Ipamorelin for enhanced growth hormone release, recovery, and anti-aging benefits.",
+                "category": "GH Secretagogue Blend",
+                "blocks": [
+                    {
+                        "label": "Ipamorelin",
+                        "value": "3 mg"
+                    },
+                    {
+                        "label": "CJC-1295",
+                        "value": "3 mg"
+                    }
+                ],
+                "guide": {
+                    "description": "CJC-1295 and Ipamorelin is the most common **growth hormone secretagogue pairing**. The blend typically contains equal parts (3 mg CJC-1295 + 3 mg Ipamorelin, 6 mg total), though ratios vary by supplier.\n\nThe two peptides hit **different pathways**. CJC-1295 (without DAC) is a GHRH analog that tells your pituitary to produce more growth hormone. Ipamorelin mimics ghrelin at the pituitary to trigger GH release. Together they amplify GH output more effectively than either alone while preserving the body's natural pulsatile release pattern.\n\nThe typical protocol is **100 to 300 mcg of each** per injection, taken before bed to align with natural GH release during sleep. It's the go-to GH peptide protocol for people who want the recovery and anti-aging benefits of elevated growth hormone without jumping straight to exogenous HGH.",
+                    "onset": "**Improved sleep quality** is usually the first thing people notice, often within the first **1 to 2 weeks**. Vivid dreams are commonly reported. Recovery from workouts improves around **weeks 2 to 4**.\n\nBody composition changes (fat loss, better skin, lean mass) take longer, typically **2 to 3 months** of consistent nightly use. Because this blend stimulates your own GH production rather than replacing it, the effects are more gradual than exogenous HGH but also more physiologically natural. Some people report increased hunger early on, which is expected since both peptides stimulate GH pathways.",
+                    "sideEffects": "**Water retention and flushing** are the most common. Some people get a **head rush or tingling** after injection, which passes quickly. Increased appetite is possible since GH stimulates hunger.\n\nIpamorelin's main advantage is selectivity: it boosts growth hormone **without significantly raising cortisol or prolactin**, which is why this combination has a milder side effect profile than older secretagogues like GHRP-6. Numbness or tingling in the hands at higher doses means your GH levels may be running too high. Lower the dose if that happens.",
+                    "storage": "**Refrigerate after reconstitution at 36 to 46°F.** Powder form is stable at room temperature. Reconstitute with bacteriostatic water, swirl gently, and use within **28 days**.\n\nCJC-1295 without DAC is sometimes labeled as **\"Mod GRF 1-29\"** by suppliers. If your vial says that, it's the same peptide.",
+                    "aliases": "CJC/Ipa, CJC-1295/Ipamorelin, Mod GRF/Ipamorelin, GH secretagogue blend"
+                }
+            }
         }
     },
     "categories": [
