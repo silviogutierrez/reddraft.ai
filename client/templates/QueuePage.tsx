@@ -10,6 +10,7 @@ const STATUS_LABELS: Record<string, string> = {
     approved: "Approved",
     rejected: "Rejected",
     posted: "Posted",
+    skipped: "Skipped",
     all: "All",
 };
 
@@ -18,6 +19,7 @@ const STATUS_COLORS: Record<string, string> = {
     APPROVED: "bg-green/20 text-green",
     REJECTED: "bg-red/20 text-red",
     POSTED: "bg-green/40 text-green",
+    SKIPPED: "bg-white/10 text-muted",
 };
 
 function Badge({status}: {status: string}) {
@@ -31,8 +33,7 @@ function Badge({status}: {status: string}) {
 }
 
 export function Template(props: Props) {
-    const {drafts, tab, counts, subreddit_configs, today_counts, weekly_counts} =
-        props;
+    const {drafts, tab, counts, subreddit_configs, today_counts, weekly_counts} = props;
 
     return (
         <Shell>
@@ -54,7 +55,14 @@ export function Template(props: Props) {
 
                 <div className="flex gap-2 mb-6 flex-wrap">
                     {(
-                        ["pending", "approved", "rejected", "posted", "all"] as const
+                        [
+                            "pending",
+                            "approved",
+                            "rejected",
+                            "posted",
+                            "skipped",
+                            "all",
+                        ] as const
                     ).map((t) => (
                         <a
                             key={t}
@@ -76,9 +84,7 @@ export function Template(props: Props) {
                 {drafts.length > 0 ? (
                     drafts.map((d) => {
                         const subCfg = subreddit_configs[d.subreddit_name];
-                        const preview = (
-                            d.edited_reply || d.draft_reply
-                        ).slice(0, 200);
+                        const preview = (d.edited_reply || d.draft_reply).slice(0, 200);
 
                         return (
                             <a
@@ -94,25 +100,20 @@ export function Template(props: Props) {
                                                 BANNED
                                             </span>
                                         )}
-                                        {subCfg?.post_via ===
-                                            "CROWDREPLY" && (
+                                        {subCfg?.post_via === "CROWDREPLY" && (
                                             <span className="bg-green/20 text-green px-2 py-0.5 rounded-lg text-[0.65rem] ml-1.5">
                                                 via CrowdReply
                                             </span>
                                         )}
                                         {subCfg &&
-                                            (today_counts[
-                                                d.subreddit_name
-                                            ] ?? 0) >=
+                                            (today_counts[d.subreddit_name] ?? 0) >=
                                                 subCfg.daily_limit && (
                                                 <span className="bg-yellow/20 text-yellow px-2 py-0.5 rounded-lg text-[0.65rem] ml-1.5">
                                                     DAY LIMIT
                                                 </span>
                                             )}
                                         {subCfg &&
-                                            (weekly_counts[
-                                                d.subreddit_name
-                                            ] ?? 0) >=
+                                            (weekly_counts[d.subreddit_name] ?? 0) >=
                                                 subCfg.weekly_limit && (
                                                 <span className="bg-yellow/20 text-yellow px-2 py-0.5 rounded-lg text-[0.65rem] ml-1.5">
                                                     WEEK LIMIT
@@ -133,20 +134,16 @@ export function Template(props: Props) {
                                     {preview}
                                 </div>
                                 <div className="text-muted text-xs mt-2">
-                                    {d.post_author &&
-                                        `by u/${d.post_author} \u00b7 `}
+                                    {d.post_author && `by u/${d.post_author} \u00b7 `}
                                     {d.created_at.slice(0, 16)}
                                     {d.edited_reply &&
-                                        d.edited_reply !==
-                                            d.draft_reply && (
+                                        d.edited_reply !== d.draft_reply && (
                                             <span className="text-green ml-2">
                                                 edited
                                             </span>
                                         )}
                                     {d.edit_notes && (
-                                        <span className="text-yellow ml-1">
-                                            notes
-                                        </span>
+                                        <span className="text-yellow ml-1">notes</span>
                                     )}
                                 </div>
                             </a>

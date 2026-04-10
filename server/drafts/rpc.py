@@ -14,6 +14,7 @@ class UpdateDraftStatusForm(Pick):
     edited_reply: str = ""
     edit_notes: str = ""
     buy_upvotes: bool = False
+    selected_variant: str = ""
 
 
 @rpc()
@@ -29,6 +30,8 @@ def update_draft_status(
         draft.edited_reply = form.edited_reply.strip()
     if form.edit_notes.strip():
         draft.edit_notes = form.edit_notes.strip()
+    if form.selected_variant:
+        draft.selected_variant = form.selected_variant
 
     draft.save()
     return {"ok": True}
@@ -41,18 +44,19 @@ class SaveDraftEditsForm(Pick):
     edit_notes: str = ""
     notes: str = ""
     buy_upvotes: bool = False
+    selected_variant: str = ""
 
 
 @rpc()
-def save_draft_edits(
-    request: HttpRequest, form: SaveDraftEditsForm
-) -> dict[str, bool]:
+def save_draft_edits(request: HttpRequest, form: SaveDraftEditsForm) -> dict[str, bool]:
     draft = Draft.objects.get(pk=form.draft_id)
     draft.draft_reply = form.draft_reply.strip()
     draft.edited_reply = form.edited_reply.strip()
     draft.edit_notes = form.edit_notes.strip()
     draft.notes = form.notes.strip()
     draft.buy_upvotes = form.buy_upvotes
+    if form.selected_variant:
+        draft.selected_variant = form.selected_variant
     draft.save()
     return {"ok": True}
 
@@ -68,9 +72,7 @@ class SaveSubredditForm(Pick):
 
 
 @rpc()
-def save_subreddit(
-    request: HttpRequest, form: SaveSubredditForm
-) -> dict[str, bool]:
+def save_subreddit(request: HttpRequest, form: SaveSubredditForm) -> dict[str, bool]:
     Subreddit.objects.update_or_create(
         name=form.name.strip(),
         defaults={
@@ -110,9 +112,7 @@ class AddDraftForm(Pick):
 
 
 @rpc()
-def add_draft(
-    request: HttpRequest, form: AddDraftForm
-) -> dict[str, int | str]:
+def add_draft(request: HttpRequest, form: AddDraftForm) -> dict[str, int | str]:
     if Draft.objects.filter(post_url=form.post_url).exists():
         existing = Draft.objects.get(post_url=form.post_url)
         return {"error": "duplicate", "existing_id": existing.pk}

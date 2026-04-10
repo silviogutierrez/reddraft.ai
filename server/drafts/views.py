@@ -37,6 +37,7 @@ TABS = {
     "approved": Draft.Status.APPROVED,
     "rejected": Draft.Status.REJECTED,
     "posted": Draft.Status.POSTED,
+    "skipped": Draft.Status.SKIPPED,
 }
 
 
@@ -132,6 +133,9 @@ class DraftDetail(Pick):
     post_author: str
     post_body: str
     draft_reply: str
+    draft_reply_b: str
+    draft_reply_c: str
+    selected_variant: str
     edited_reply: str
     edit_notes: str
     notes: str
@@ -197,6 +201,9 @@ def draft_page(request: HttpRequest, draft_id: int) -> HttpResponse:
         post_author=draft.post_author,
         post_body=draft.post_body,
         draft_reply=draft.draft_reply,
+        draft_reply_b=draft.draft_reply_b,
+        draft_reply_c=draft.draft_reply_c,
+        selected_variant=draft.selected_variant,
         edited_reply=draft.edited_reply,
         edit_notes=draft.edit_notes,
         notes=draft.notes,

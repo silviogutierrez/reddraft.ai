@@ -29,6 +29,7 @@ class Draft(Model):
         APPROVED = "Approved"
         REJECTED = "Rejected"
         POSTED = "Posted"
+        SKIPPED = "Skipped"
 
     class Action(Enum):
         LINK = "Link"
@@ -42,6 +43,9 @@ class Draft(Model):
     post_author = models.CharField(max_length=255, blank=True)
     post_body = models.TextField(blank=True)
     draft_reply = models.TextField(blank=True)
+    draft_reply_b = models.TextField(blank=True)
+    draft_reply_c = models.TextField(blank=True)
+    selected_variant = models.CharField(max_length=1, blank=True)
     edited_reply = models.TextField(blank=True)
     edit_notes = models.TextField(blank=True)
     notes = models.TextField(blank=True)

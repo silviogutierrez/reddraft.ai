@@ -11,6 +11,7 @@ const STATUS_COLORS: Record<string, string> = {
     APPROVED: "bg-green/20 text-green",
     REJECTED: "bg-red/20 text-red",
     POSTED: "bg-green/40 text-green",
+    SKIPPED: "bg-white/10 text-muted",
 };
 
 export function Template(props: Props) {
@@ -23,6 +24,40 @@ export function Template(props: Props) {
     const [notes, setNotes] = React.useState(draft.notes);
     const [buyUpvotes, setBuyUpvotes] = React.useState(draft.buy_upvotes);
     const [draftReply, setDraftReply] = React.useState(draft.draft_reply);
+    const [activeVariant, setActiveVariant] = React.useState<"A" | "B" | "C">("A");
+    const [hasManuallyEdited, setHasManuallyEdited] = React.useState(
+        draft.edited_reply !== "" && draft.edited_reply !== draft.draft_reply,
+    );
+    const touchStartX = React.useRef(0);
+
+    const variants: {label: string; value: string}[] = [
+        {label: "A", value: draft.draft_reply},
+        ...(draft.draft_reply_b !== ""
+            ? [{label: "B", value: draft.draft_reply_b}]
+            : []),
+        ...(draft.draft_reply_c !== ""
+            ? [{label: "C", value: draft.draft_reply_c}]
+            : []),
+    ];
+
+    const handleVariantClick = (label: "A" | "B" | "C", value: string) => {
+        setActiveVariant(label);
+        setDraftReply(value);
+        if (!hasManuallyEdited) {
+            setEditedReply(value);
+        }
+    };
+
+    const handleSwipe = (deltaX: number) => {
+        const currentIndex = variants.findIndex((v) => v.label === activeVariant);
+        if (deltaX < -50 && currentIndex < variants.length - 1) {
+            const next = variants[currentIndex + 1];
+            handleVariantClick(next.label as "A" | "B" | "C", next.value);
+        } else if (deltaX > 50 && currentIndex > 0) {
+            const prev = variants[currentIndex - 1];
+            handleVariantClick(prev.label as "A" | "B" | "C", prev.value);
+        }
+    };
 
     const handleStatusChange = async (newStatus: schema.Status) => {
         await schema.update_draft_status({
@@ -31,6 +66,7 @@ export function Template(props: Props) {
             edited_reply: editedReply,
             edit_notes: editNotes,
             buy_upvotes: buyUpvotes,
+            selected_variant: activeVariant,
         });
         window.location.href = "/";
     };
@@ -43,6 +79,7 @@ export function Template(props: Props) {
             edit_notes: editNotes,
             notes,
             buy_upvotes: buyUpvotes,
+            selected_variant: activeVariant,
         });
         window.location.href = `/draft/${draft.id}/`;
     };
@@ -72,13 +109,11 @@ export function Template(props: Props) {
                                     : "Self"}
                             </span>
                         )}
-                        {sub_info &&
-                            today_count >= sub_info.daily_limit && (
-                                <span className="bg-yellow/30 text-yellow px-2 py-0.5 rounded-lg text-[0.65rem] font-semibold ml-1.5">
-                                    DAILY LIMIT ({today_count}/
-                                    {sub_info.daily_limit})
-                                </span>
-                            )}
+                        {sub_info && today_count >= sub_info.daily_limit && (
+                            <span className="bg-yellow/30 text-yellow px-2 py-0.5 rounded-lg text-[0.65rem] font-semibold ml-1.5">
+                                DAILY LIMIT ({today_count}/{sub_info.daily_limit})
+                            </span>
+                        )}
                         {sub_info?.competitors && (
                             <div className="mt-2 text-sm text-muted">
                                 Mention: {sub_info.competitors}
@@ -96,8 +131,7 @@ export function Template(props: Props) {
                         </a>
                     </div>
                     <div className="text-muted text-sm mb-3">
-                        {draft.post_author &&
-                            `by u/${draft.post_author} \u00b7 `}
+                        {draft.post_author && `by u/${draft.post_author} \u00b7 `}
                         {draft.created_at.slice(0, 16)}
                     </div>
                     {draft.post_body && (
@@ -123,18 +157,65 @@ export function Template(props: Props) {
                         </span>
                     )}
 
-                    {/* Original Draft (read-only) */}
-                    <h2 className="text-xs uppercase tracking-widest text-muted mb-3 mt-4">
-                        Original Draft{" "}
+                    {/* Variant Tabs */}
+                    <div className="flex items-center gap-2 mt-4 mb-3">
+                        <h2 className="text-xs uppercase tracking-widest text-muted">
+                            Draft Variants
+                        </h2>
+                        <div className="flex gap-1">
+                            {variants.map((v) => (
+                                <button
+                                    key={v.label}
+                                    onClick={() =>
+                                        handleVariantClick(
+                                            v.label as "A" | "B" | "C",
+                                            v.value,
+                                        )
+                                    }
+                                    className={`px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
+                                        activeVariant === v.label
+                                            ? "bg-accent2 text-text"
+                                            : "bg-black/20 text-muted hover:text-text"
+                                    }`}
+                                >
+                                    {v.label}
+                                </button>
+                            ))}
+                        </div>
                         <span className="text-[0.65rem] text-muted normal-case tracking-normal">
-                            (do not edit &mdash; this is the AI original)
+                            (read-only &mdash; click to preview)
                         </span>
-                    </h2>
-                    <textarea
-                        value={draftReply}
-                        readOnly
-                        className="w-full bg-black/30 text-text border border-accent2 rounded-lg p-3 font-sans text-sm leading-relaxed resize-y min-h-[150px] opacity-60"
-                    />
+                    </div>
+                    <div
+                        onTouchStart={(e) => {
+                            touchStartX.current = e.touches[0].clientX;
+                        }}
+                        onTouchEnd={(e) => {
+                            const deltaX =
+                                e.changedTouches[0].clientX - touchStartX.current;
+                            handleSwipe(deltaX);
+                        }}
+                    >
+                        <textarea
+                            value={draftReply}
+                            readOnly
+                            className="w-full bg-black/30 text-text border border-accent2 rounded-lg p-3 font-sans text-sm leading-relaxed resize-y min-h-[150px] opacity-60"
+                        />
+                        {variants.length > 1 && (
+                            <div className="flex justify-center gap-2 mt-2">
+                                {variants.map((v) => (
+                                    <span
+                                        key={v.label}
+                                        className={`w-2 h-2 rounded-full ${
+                                            activeVariant === v.label
+                                                ? "bg-accent"
+                                                : "bg-white/20"
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     {/* Edited Version */}
                     <h2 className="text-xs uppercase tracking-widest text-muted mb-3 mt-4">
@@ -145,7 +226,10 @@ export function Template(props: Props) {
                     </h2>
                     <textarea
                         value={editedReply}
-                        onChange={(e) => setEditedReply(e.target.value)}
+                        onChange={(e) => {
+                            setEditedReply(e.target.value);
+                            setHasManuallyEdited(true);
+                        }}
                         className="w-full bg-bg text-text border border-accent2 rounded-lg p-3 font-sans text-sm leading-relaxed resize-y min-h-[150px] focus:outline-none focus:border-accent"
                     />
 
@@ -155,9 +239,7 @@ export function Template(props: Props) {
                             <input
                                 type="checkbox"
                                 checked={buyUpvotes}
-                                onChange={(e) =>
-                                    setBuyUpvotes(e.target.checked)
-                                }
+                                onChange={(e) => setBuyUpvotes(e.target.checked)}
                                 className="w-[18px] h-[18px] accent-green"
                             />
                             <span className="text-sm font-semibold">
@@ -166,8 +248,7 @@ export function Template(props: Props) {
                         </label>
                         {draft.upvotes_needed != null && (
                             <span className="text-xs text-muted">
-                                ({draft.upvotes_needed} needed to beat top
-                                comment)
+                                ({draft.upvotes_needed} needed to beat top comment)
                             </span>
                         )}
                     </div>

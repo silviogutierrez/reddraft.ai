@@ -1,69 +1,63 @@
-"""v2 draft generation: triage -> tracking link -> reply, using structured outputs."""
+"""v3 draft generation: Agent SDK, Opus, 3 variants, no triage step."""
 
 from __future__ import annotations
 
+import asyncio
 import json
 import re
 import sys
 from typing import Any
 from urllib.request import Request, urlopen
 
-import anthropic
 import praw
+from claude_agent_sdk import (
+    AssistantMessage,
+    ClaudeAgentOptions,
+    ResultMessage,
+    query,
+)
+from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from server.drafts.models import Draft, Subreddit
 
-MODEL = "claude-sonnet-4-6"
-MAX_VOICE_CHARS = 350_000
+MODEL = "claude-opus-4-6"
 
-TRIAGE_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "action": {
-            "type": "string",
-            "enum": ["LINK", "ADVICE_ONLY", "REJECT"],
-        },
-        "reasoning": {"type": "string"},
-        "confidence": {
-            "type": "integer",
-            "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        },
-        "extracted_params": {
-            "type": "object",
-            "properties": {
-                "peptide": {"type": ["string", "null"]},
-                "vial": {"type": ["string", "null"]},
-                "vial_unit": {"type": ["string", "null"]},
-                "dose": {"type": ["string", "null"]},
-                "dose_unit": {"type": ["string", "null"]},
-                "syringe": {"type": ["string", "null"]},
-                "water": {"type": ["string", "null"]},
+DRAFT_REPLY_SCHEMA = {
+    "type": "json_schema",
+    "schema": {
+        "type": "object",
+        "properties": {
+            "reply": {"type": "string"},
+            "includes_link": {"type": "boolean"},
+            "skip_reason": {"type": ["string", "null"]},
+            "extracted_params": {
+                "type": "object",
+                "properties": {
+                    "peptide": {"type": ["string", "null"]},
+                    "vial": {"type": ["string", "null"]},
+                    "vial_unit": {"type": ["string", "null"]},
+                    "dose": {"type": ["string", "null"]},
+                    "dose_unit": {"type": ["string", "null"]},
+                    "syringe": {"type": ["string", "null"]},
+                    "water": {"type": ["string", "null"]},
+                },
+                "required": [
+                    "peptide",
+                    "vial",
+                    "vial_unit",
+                    "dose",
+                    "dose_unit",
+                    "syringe",
+                    "water",
+                ],
+                "additionalProperties": False,
             },
-            "required": [
-                "peptide",
-                "vial",
-                "vial_unit",
-                "dose",
-                "dose_unit",
-                "syringe",
-                "water",
-            ],
-            "additionalProperties": False,
         },
-        "upvotes_needed": {
-            "type": ["integer", "null"],
-        },
+        "required": ["reply", "includes_link", "skip_reason", "extracted_params"],
+        "additionalProperties": False,
     },
-    "required": [
-        "action",
-        "reasoning",
-        "confidence",
-        "extracted_params",
-        "upvotes_needed",
-    ],
-    "additionalProperties": False,
 }
 
 
@@ -86,15 +80,13 @@ def get_reddit() -> praw.Reddit:
     return praw.Reddit(
         client_id=settings.REDDIT_CLIENT_ID,
         client_secret=settings.REDDIT_CLIENT_SECRET,
-        user_agent="generate-draft/2.0",
+        user_agent="generate-draft/3.0",
         username=settings.REDDIT_USERNAME,
         password=settings.REDDIT_PASSWORD,
     )
 
 
-def fetch_post(
-    submission_id: str, comment_id: str | None = None
-) -> dict[str, str]:
+def fetch_post(submission_id: str, comment_id: str | None = None) -> dict[str, str]:
     reddit = get_reddit()
     post = reddit.submission(id=submission_id)
 
@@ -132,9 +124,7 @@ def fetch_post(
         for _ in range(5):
             parent = current.parent()
             if isinstance(parent, praw.models.Comment):
-                parent_author = (
-                    str(parent.author) if parent.author else "[deleted]"
-                )
+                parent_author = str(parent.author) if parent.author else "[deleted]"
                 parent_chain.append(f"u/{parent_author}: {parent.body}")
                 current = parent
             else:
@@ -145,11 +135,12 @@ def fetch_post(
     return result
 
 
-def load_few_shot_examples() -> tuple[str, str]:
+def load_correction_history() -> tuple[str, str]:
+    """Load ALL posted and rejected drafts as correction history."""
     posted_rows = (
         Draft.objects.filter(status=Draft.Status.POSTED)
         .exclude(edited_reply="")
-        .order_by("-id")[:15]
+        .order_by("-id")
     )
 
     posted_xml = []
@@ -168,7 +159,7 @@ def load_few_shot_examples() -> tuple[str, str]:
     rejected_rows = (
         Draft.objects.filter(status=Draft.Status.REJECTED)
         .exclude(edit_notes="")
-        .order_by("-id")[:30]
+        .order_by("-id")
     )
 
     rejected_xml = []
@@ -187,183 +178,7 @@ def load_few_shot_examples() -> tuple[str, str]:
 
 
 def get_banned_subreddits() -> set[str]:
-    return set(
-        Subreddit.objects.filter(banned=True).values_list("name", flat=True)
-    )
-
-
-def build_triage_prompt(
-    post: dict[str, str],
-    voice: str,
-    product: str,
-    humanizer: str,
-    peptides_catalog: str,
-    posted_examples: str,
-    rejected_examples: str,
-    *,
-    third_party: bool = False,
-) -> str:
-    if third_party:
-        disclosure_rule = (
-            'Do NOT say "I built this", "I made this", "Disclosure: I\'m the creator", or anything similar. '
-            "You are posting from a third-party account. Just drop the link naturally without any ownership claim."
-        )
-        third_party_note = "\nNOTE: This is a banned subreddit. The reply will be posted from a third-party account. Do NOT include any ownership claims."
-    else:
-        disclosure_rule = 'Vary the disclosure phrasing: "I built this", "I made this", "Disclosure: mine", etc.'
-        third_party_note = ""
-
-    target_section = ""
-    if post.get("target_comment"):
-        target_section = f"""
-TARGET COMMENT (you are replying to THIS comment, not the post directly):
-<target_comment>
-Author: u/{post['target_comment_author']}
-{post['target_comment']}
-</target_comment>
-"""
-        if post.get("parent_chain"):
-            target_section += f"""
-PARENT COMMENT CHAIN (for context, oldest first):
-<parent_chain>
-{post['parent_chain']}
-</parent_chain>
-"""
-
-    return f"""You are analyzing a Reddit post to decide how to reply as u/brosterdamus (Silvio).
-
-VOICE GUIDE (how to write):
-<voice>
-{voice}
-</voice>
-
-ANTI-AI WRITING GUIDE (patterns to avoid — your output MUST pass as human-written):
-<humanizer>
-{humanizer}
-</humanizer>
-
-PRODUCT DOCUMENTATION (what the calculator does, URL parameters, peptide keys):
-<product>
-{product}
-</product>
-
-PEPTIDE CATALOG (all supported peptides, blends, compounds, vial sizes, dose presets — this is the source of truth for valid ?peptide= URL parameter values):
-<peptides_catalog>
-{peptides_catalog}
-</peptides_catalog>
-
-PEPTIDE KNOWLEDGE (use these facts, do NOT make up dosing info):
-<facts>
-- Retatrutide starting dose is 2mg weekly per clinical trials, though 1mg is also fine to start with. Pin once a week, titrate up as needed.
-- Tirzepatide starting dose is 2.5mg weekly.
-- Semaglutide starting dose is 0.25mg weekly.
-- Cagrilintide doses vary wildly per person, some respond at 0.25mg, others need 2mg+.
-</facts>
-
-CRITICAL VOICE RULES (violations = instant rejection):
-- Use informal shorthand: "subq" not "subcutaneous", "bac water" not "bacteriostatic water", "tirz" not "tirzepatide" (when referencing casually), "reta" not "retatrutide" (same), "sema" not "semaglutide" (same). Use full names only on first mention or in a calculator link context.
-- Reference other commenters as /u/username, not "Someone mentioned" or by name.
-- Do NOT use em dashes (—). Use commas, periods, or parentheses instead.
-- Do NOT use self-deprecating hedges like "grain of salt", "for what it's worth", "take it or leave it".
-- Occasionally drop an article ("add 1ml bac water" not "add 1ml of bac water"), use a run-on sentence, or leave something lowercase that "should" be capitalized. Real reddit posts aren't grammatically perfect. Don't overdo this, just let it happen naturally once or twice.
-- Do not use emoji.
-- Do not open with "Great question!" or "Hope this helps!" or any greeting.
-- Do not use bold (**text**) excessively. One or two bolds max per reply, if any.
-- {disclosure_rule}
-
-APPROVED REPLIES (these passed review — learn from the style, tone, and edits):
-<posted_examples>
-{posted_examples}
-</posted_examples>
-
-REJECTED REPLIES (these were rejected — the rejection_notes explain why):
-<rejected_examples>
-{rejected_examples}
-</rejected_examples>
-
-REDDIT POST TO ANALYZE:
-<post>
-Subreddit: r/{post['subreddit']}
-Title: {post['title']}
-Author: u/{post['author']}
-Score: {post['score']}
-
-{post['body']}
-</post>
-{target_section}
-EXISTING COMMENTS (for context — do not repeat what others have already said):
-<comments>
-{post['comments']}
-</comments>
-{third_party_note}
-TASK: Analyze this post and decide how to reply.
-
-- LINK: The post involves dosing, reconstitution, mixing math, syringe calculations, or any scenario where the peptide calculator (joyapp.com/peptides/) would be useful. Choose LINK even if the question has already been answered — we are pitching the calculator as a helpful tool. Extract all inferable calculator URL parameters. Use peptide keys from the catalog (e.g., retatrutide, tirzepatide, wolverine, glow, klow, custom). Default syringe to "1" if not mentioned. For the water param: set it ONLY if the poster has ALREADY reconstituted (mixed water into the vial). If they're asking how much water to add, or planning to add water, or thinking about it, leave water as null so the calculator auto-picks the optimal amount.
-- ADVICE_ONLY: The post is about peptides/GLP-1s but the calculator isn't relevant (side effects, progress, general advice, diet, stacking without math). We'll reply with helpful advice and no link.
-- REJECT: The post has nothing to do with peptides, is a meme, or replying would be inappropriate/spammy.
-
-Also provide:
-
-- confidence (1-10): How confident are you that this reply can be posted automatically WITHOUT human review? This is the bar:
-  - 9-10: Slam dunk. Simple reconstitution math or straightforward dosing question. We know the exact answer. No nuance, no empathy needed, no risk of being wrong. The voice is easy to nail (short, factual). Post looks fresh with few or no existing answers.
-  - 7-8: Very likely fine. Clear question we can answer well, but minor risk factors: slightly tricky voice (needs empathy or nuance), or the post already has decent answers so ours might look redundant.
-  - 5-6: Needs review. We can probably help, but: the question is ambiguous, or we'd need to make assumptions about their setup, or the topic requires careful phrasing (medical concerns, stacking advice), or the thread is old/crowded.
-  - 3-4: Risky. The post is only tangentially relevant, or we'd be stretching to include a link, or there's high risk of getting the voice wrong (emotional topic, complex situation).
-  - 1-2: Almost certainly needs edits or should be skipped. Borderline spam territory, very hard voice, or we're not sure of the facts.
-
-- upvotes_needed: how many upvotes our comment would need to become the top comment in the thread. Look at the existing comment scores. If the top comment has score N, we need N+1 upvotes. If there are no comments yet, return 0. Return null if REJECT."""
-
-
-def build_reply_prompt_link(triage: dict[str, Any], tracking_code: str) -> str:
-    params = triage["extracted_params"]
-
-    url_parts = []
-    for key in ["peptide", "vial", "vial_unit", "dose", "dose_unit", "syringe", "water"]:
-        val = params.get(key)
-        if val is not None:
-            url_parts.append(f"{key}={val}")
-    url_parts.append(f"t={tracking_code}")
-
-    calculator_url = "https://www.joyapp.com/peptides/?" + "&".join(url_parts)
-
-    return f"""Action confirmed: LINK.
-
-The tracking code is: {tracking_code}
-
-Write the reply. Use this pre-filled calculator URL:
-{calculator_url}
-
-For blends (wolverine, glow, klow), the peptide key IS the blend name, no need to list individual components in the URL.
-WATER PARAM RULES:
-- Include &water=X ONLY if the poster has ALREADY reconstituted (already mixed water into the vial). Example: "I added 2ml of bac water" = include &water=2.
-- Do NOT include &water if they're asking how much water to add, planning to add water, or haven't mixed yet. When water is omitted, the calculator auto-picks the optimal water amount for the cleanest syringe draws.
-- You can tell them to "click manual" to try different water amounts and compare.
-
-STRICT RULES (violating ANY of these = instant rejection):
-- Answer ONLY the specific question(s) asked. Do NOT volunteer extra advice, warnings, tips, or address topics the poster only mentioned in passing. If they asked about reconstitution math, answer that. Don't add paragraphs about side effects, injection technique, or dosing schedules they didn't ask about.
-- 2-4 sentences max before the link.
-- Do NOT just parrot what another commenter already said. Add your own value (the calculator).
-- Do NOT use em dashes (the long dash character). Use commas, periods, or parentheses instead. This is the #1 reason drafts get rejected.
-- No emoji, no greetings, no "Hope this helps!"
-- Keep it casual and imperfect. Drop an article, use a run-on, leave something lowercase.
-
-Output ONLY the reply text. No meta-commentary."""
-
-
-def build_reply_prompt_advice() -> str:
-    return """Action confirmed: ADVICE_ONLY.
-
-Write the reply. No calculator link.
-
-STRICT RULES (violating ANY of these = instant rejection):
-- Answer ONLY the specific question(s) asked. Do NOT volunteer extra advice, warnings, tips, or address topics the poster only mentioned in passing. If they asked about side effects, answer that. Don't add dosing schedules, injection technique, or other topics they didn't ask about.
-- 2-4 sentences max.
-- Do NOT just parrot what another commenter already said. Add your own value.
-- Do NOT use em dashes (the long dash character). Use commas, periods, or parentheses instead. This is the #1 reason drafts get rejected.
-- No emoji, no greetings, no "Hope this helps!"
-- Keep it casual and imperfect. Drop an article, use a run-on, leave something lowercase.
-
-Output ONLY the reply text. No meta-commentary."""
+    return set(Subreddit.objects.filter(banned=True).values_list("name", flat=True))
 
 
 def create_tracking_link(post_url: str, subreddit: str) -> str:
@@ -385,75 +200,237 @@ def create_tracking_link(post_url: str, subreddit: str) -> str:
         return json.loads(resp.read().decode())  # type: ignore[no-any-return]
 
 
-def save_draft(
-    post: dict[str, str],
-    triage: dict[str, Any],
-    reply: str | None,
-    tracking_code: str | None,
-) -> int:
-    action_str = triage["action"]
-    action_enum = Draft.Action[action_str]
-    status = Draft.Status.REJECTED if action_str == "REJECT" else Draft.Status.PENDING
-    upvotes_needed = triage.get("upvotes_needed")
+SYSTEM_PROMPT = """You are a Reddit reply assistant for u/brosterdamus (Silvio), who built a peptide reconstitution calculator at joyapp.com/peptides/.
 
-    existing = Draft.objects.filter(post_url=post["url"]).first()
+Your job is to write helpful, natural-sounding Reddit replies that match Silvio's voice. For each post, you will either write a reply or explain why the post should be skipped.
 
-    if existing:
-        existing.draft_reply = reply or ""
-        existing.action = action_enum
-        existing.confidence = triage["confidence"]
-        existing.upvotes_needed = upvotes_needed
-        existing.tracking_code = tracking_code or ""
-        existing.triage_reasoning = triage["reasoning"]
-        existing.notes = triage["reasoning"] if action_str == "REJECT" else ""
-        existing.status = status
-        existing.save()
-        return existing.pk
+OUTPUT RULES:
+- If the post is clearly irrelevant (not about peptides/GLP-1s, is a meme, replying would be inappropriate or spammy), set skip_reason to a brief explanation and leave reply empty.
+- Otherwise, write a reply in the "reply" field.
+- Set includes_link to true if your reply contains a calculator link, false otherwise.
+- Extract all inferable calculator URL parameters into extracted_params.
 
-    draft = Draft.objects.create(
-        subreddit_name=post["subreddit"],
-        post_title=post["title"],
-        post_url=post["url"],
-        post_author=post["author"],
-        post_body=post["body"],
-        draft_reply=reply or "",
-        action=action_enum,
-        confidence=triage["confidence"],
-        upvotes_needed=upvotes_needed,
-        tracking_code=tracking_code or "",
-        triage_reasoning=triage["reasoning"],
-        notes=triage["reasoning"] if action_str == "REJECT" else "",
-        status=status,
-    )
-    return draft.pk
+PEPTIDE KNOWLEDGE (use these facts, do NOT make up dosing info):
+- Retatrutide starting dose is 2mg weekly per clinical trials, though 1mg is also fine to start with. Pin once a week, titrate up as needed.
+- Tirzepatide starting dose is 2.5mg weekly.
+- Semaglutide starting dose is 0.25mg weekly.
+- Cagrilintide doses vary wildly per person, some respond at 0.25mg, others need 2mg+.
+
+CRITICAL VOICE RULES (violations = instant rejection):
+- Use informal shorthand: "subq" not "subcutaneous", "bac water" not "bacteriostatic water", "tirz" not "tirzepatide" (when referencing casually), "reta" not "retatrutide" (same), "sema" not "semaglutide" (same). Use full names only on first mention or in a calculator link context.
+- Reference other commenters as /u/username, not "Someone mentioned" or by name.
+- Do NOT use em dashes (the long dash character). Use commas, periods, or parentheses instead. This is the #1 reason drafts get rejected.
+- Do NOT use self-deprecating hedges like "grain of salt", "for what it's worth", "take it or leave it".
+- Occasionally drop an article ("add 1ml bac water" not "add 1ml of bac water"), use a run-on sentence, or leave something lowercase that "should" be capitalized. Real reddit posts aren't grammatically perfect. Don't overdo this, just let it happen naturally once or twice.
+- Do not use emoji.
+- Do not open with "Great question!" or "Hope this helps!" or any greeting.
+- Do not use bold (**text**) excessively. One or two bolds max per reply, if any.
+
+REPLY RULES:
+- Answer ONLY the specific question(s) asked. Do NOT volunteer extra advice, warnings, tips, or address topics the poster only mentioned in passing.
+- 2-4 sentences max before any link. Keep it concise.
+- Do NOT just parrot what another commenter already said. Add your own value.
+- If the calculator is relevant (dosing, reconstitution, mixing math, syringe calculations), include a pre-filled calculator link.
+- If the calculator is not relevant (side effects, progress, general advice, diet, stacking without math), reply with helpful advice and no link.
+
+WATER PARAM RULES:
+- Include &water=X in the URL ONLY if the poster has ALREADY reconstituted (already mixed water into the vial). Example: "I added 2ml of bac water" = include &water=2.
+- Do NOT include &water if they're asking how much water to add, planning to add water, or haven't mixed yet. When water is omitted, the calculator auto-picks the optimal water amount for the cleanest syringe draws.
+- You can tell them to "click manual" to try different water amounts and compare.
+
+CALCULATOR URL FORMAT:
+- Base URL: https://www.joyapp.com/peptides/
+- Add query parameters for values you can infer: ?peptide=KEY&vial=SIZE&vial_unit=UNIT&dose=DOSE&dose_unit=UNIT&syringe=SIZE&water=AMOUNT
+- Always append &t={{TRACKING_CODE}} at the end of the URL. This placeholder will be replaced with an actual tracking code after generation.
+- Use peptide keys from the catalog (e.g., retatrutide, tirzepatide, wolverine, glow, klow, custom).
+- Default syringe to "1" if not mentioned.
+- For blends (wolverine, glow, klow), the peptide key IS the blend name, no need to list individual components.
+- Only include parameters you can infer from the post. Omit unknown ones (except syringe defaults to 1)."""
 
 
-def process_url(
-    url: str,
-    client: anthropic.Anthropic,
+def build_context(
     voice: str,
-    product: str,
     humanizer: str,
+    product: str,
     peptides_catalog: str,
     posted_examples: str,
     rejected_examples: str,
+) -> str:
+    """Build the large context block that gets prepended to the user prompt.
+
+    This is separate from the system prompt because the Agent SDK passes
+    system_prompt as a CLI argument (subject to OS arg size limits), while
+    the prompt is sent via stdin after process creation (no size limit).
+    """
+    return f"""REFERENCE CONTEXT (use this to inform your reply):
+
+VOICE GUIDE (how to write):
+<voice>
+{voice}
+</voice>
+
+ANTI-AI WRITING GUIDE (patterns to avoid — your output MUST pass as human-written):
+<humanizer>
+{humanizer}
+</humanizer>
+
+PRODUCT DOCUMENTATION (what the calculator does, URL parameters, peptide keys):
+<product>
+{product}
+</product>
+
+PEPTIDE CATALOG (all supported peptides, blends, compounds, vial sizes, dose presets — source of truth for valid ?peptide= URL parameter values):
+<peptides_catalog>
+{peptides_catalog}
+</peptides_catalog>
+
+CORRECTION HISTORY — APPROVED REPLIES (these passed review, learn from the style, tone, and edits applied):
+<posted_examples>
+{posted_examples}
+</posted_examples>
+
+CORRECTION HISTORY — REJECTED REPLIES (these were rejected, the rejection_notes explain why):
+<rejected_examples>
+{rejected_examples}
+</rejected_examples>
+
+---
+NOW REPLY TO THE FOLLOWING POST:
+"""
+
+
+def build_user_prompt(
+    post: dict[str, str],
+    *,
+    third_party: bool = False,
+    variant: int = 1,
+    prior_replies: list[str] | None = None,
+) -> str:
+    if third_party:
+        disclosure = (
+            "DISCLOSURE MODE: Third-party account. Do NOT say "
+            '"I built this", "I made this", "Disclosure: I\'m the creator", '
+            "or anything similar. Just drop the link naturally without any "
+            "ownership claim."
+        )
+    else:
+        disclosure = (
+            "DISCLOSURE MODE: Self (posting as the creator). "
+            'Vary the disclosure phrasing: "I built this", "I made this", '
+            '"Disclosure: mine", etc.'
+        )
+
+    target_section = ""
+    if post.get("target_comment"):
+        target_section = f"""
+TARGET COMMENT (you are replying to THIS comment, not the post directly):
+<target_comment>
+Author: u/{post["target_comment_author"]}
+{post["target_comment"]}
+</target_comment>
+"""
+        if post.get("parent_chain"):
+            target_section += f"""
+PARENT COMMENT CHAIN (for context, oldest first):
+<parent_chain>
+{post["parent_chain"]}
+</parent_chain>
+"""
+
+    variant_instruction = ""
+    if variant > 1 and prior_replies:
+        prior_block = "\n---\n".join(
+            f"VARIANT {i + 1}:\n{r}" for i, r in enumerate(prior_replies)
+        )
+        variant_instruction = (
+            f"\nThis is variant {variant} of 3. Here are the previous variants you wrote:\n"
+            f"<prior_variants>\n{prior_block}\n</prior_variants>\n"
+            "Write a meaningfully different reply. Try a different opener, "
+            "angle, level of detail, or way to introduce the link. "
+            "Do NOT repeat the same structure or phrasing."
+        )
+
+    return f"""REDDIT POST:
+<post>
+Subreddit: r/{post["subreddit"]}
+Title: {post["title"]}
+Author: u/{post["author"]}
+Score: {post["score"]}
+
+{post["body"]}
+</post>
+{target_section}
+EXISTING COMMENTS (for context — do not repeat what others have already said):
+<comments>
+{post["comments"]}
+</comments>
+
+{disclosure}{variant_instruction}"""
+
+
+async def generate_variant(
+    context: str,
+    user_prompt: str,
+    token: str,
+) -> dict[str, Any]:
+    """Generate one draft variant using the Agent SDK."""
+    full_prompt = context + user_prompt
+    result: dict[str, Any] | None = None
+    async for message in query(
+        prompt=full_prompt,
+        options=ClaudeAgentOptions(
+            system_prompt=SYSTEM_PROMPT,
+            model=MODEL,
+            output_format=DRAFT_REPLY_SCHEMA,
+            allowed_tools=[],
+            max_turns=1,
+            betas=["context-1m-2025-08-07"],
+            env={"CLAUDE_CODE_OAUTH_TOKEN": token},
+        ),
+    ):
+        if isinstance(message, ResultMessage):
+            if message.structured_output:
+                result = message.structured_output
+        elif isinstance(message, AssistantMessage):
+            # The Agent SDK delivers structured output via a ToolUseBlock
+            # named 'StructuredOutput'. Extract it if ResultMessage doesn't
+            # populate structured_output.
+            for block in message.content:
+                if (
+                    hasattr(block, "name")
+                    and block.name == "StructuredOutput"
+                    and hasattr(block, "input")
+                ):
+                    result = block.input
+    if result is None:
+        raise RuntimeError("No structured output received from Agent SDK")
+    return result
+
+
+async def process_url(
+    url: str,
+    context: str,
+    token: str,
     banned_subs: set[str],
     *,
     dry_run: bool = False,
-) -> dict[str, Any] | None:
+) -> None:
     submission_id, comment_id = parse_reddit_url(url)
 
     if not dry_run:
-        existing = Draft.objects.filter(
-            post_url__contains=f"/comments/{submission_id}/",
-            status__in=[Draft.Status.POSTED, Draft.Status.APPROVED],
-        ).first()
+        existing = await sync_to_async(
+            Draft.objects.filter(
+                post_url__contains=f"/comments/{submission_id}/",
+                status__in=[Draft.Status.POSTED, Draft.Status.APPROVED],
+            ).first
+        )()
         if existing:
             print(
-                f"  Skipping: already have draft #{existing.pk} ({existing.status}) for this post",
+                f"  Skipping: already have draft #{existing.pk} "
+                f"({existing.status}) for this post",
                 file=sys.stderr,
             )
-            return None
+            return
 
     print(
         f"Fetching post {submission_id}"
@@ -470,60 +447,65 @@ def process_url(
         file=sys.stderr,
     )
 
-    triage_prompt = build_triage_prompt(
-        post,
-        voice,
-        product,
-        humanizer,
-        peptides_catalog,
-        posted_examples,
-        rejected_examples,
-        third_party=is_third_party,
-    )
+    # Variant A
+    print("  Generating variant A...", file=sys.stderr)
+    prompt_a = build_user_prompt(post, third_party=is_third_party, variant=1)
+    result_a = await generate_variant(context, prompt_a, token)
 
-    print("  Triage...", file=sys.stderr)
-    triage_response = client.messages.create(
-        model=MODEL,
-        max_tokens=1024,
-        messages=[{"role": "user", "content": triage_prompt}],
-        output_config={
-            "format": {
-                "type": "json_schema",
-                "schema": TRIAGE_SCHEMA,
-            }
-        },
-    )
-
-    tu = triage_response.usage
-    print(
-        f"  Triage tokens: {tu.input_tokens:,} in / {tu.output_tokens:,} out (${tu.input_tokens * 3 / 1_000_000 + tu.output_tokens * 15 / 1_000_000:.3f})",
-        file=sys.stderr,
-    )
-
-    triage = json.loads(triage_response.content[0].text)
-    upvotes = triage.get("upvotes_needed")
-    upvotes_label = f", upvotes needed: {upvotes}" if upvotes is not None else ""
-    print(
-        f"  Action: {triage['action']} (confidence: {triage['confidence']}{upvotes_label})",
-        file=sys.stderr,
-    )
-    print(f"  Reasoning: {triage['reasoning']}", file=sys.stderr)
-
-    if triage["action"] == "REJECT":
+    if result_a.get("skip_reason"):
+        print(f"  Skipped: {result_a['skip_reason']}", file=sys.stderr)
         if dry_run:
-            print("  [dry-run] Would reject, skipping DB save", file=sys.stderr)
-            print(json.dumps(triage, indent=2))
+            print("  [dry-run] Would save as SKIPPED", file=sys.stderr)
+            print(json.dumps(result_a, indent=2))
         else:
-            draft_id = save_draft(post, triage, reply=None, tracking_code=None)
-            print(f"  Rejected -> draft #{draft_id}", file=sys.stderr)
-        return triage
+            existing_draft = await sync_to_async(
+                Draft.objects.filter(post_url=post["url"]).first
+            )()
+            if existing_draft:
+                existing_draft.status = Draft.Status.SKIPPED
+                existing_draft.notes = result_a["skip_reason"]
+                await sync_to_async(existing_draft.save)()
+                print(f"  Skipped -> draft #{existing_draft.pk}", file=sys.stderr)
+            else:
+                draft = await sync_to_async(Draft.objects.create)(
+                    subreddit_name=post["subreddit"],
+                    post_title=post["title"],
+                    post_url=post["url"],
+                    post_author=post["author"],
+                    post_body=post["body"],
+                    status=Draft.Status.SKIPPED,
+                    notes=result_a["skip_reason"],
+                )
+                print(f"  Skipped -> draft #{draft.pk}", file=sys.stderr)
+        return
 
-    tracking_code = None
-    if triage["action"] == "LINK":
+    # Variants B and C (fed prior replies for differentiation)
+    print("  Generating variant B...", file=sys.stderr)
+    prompt_b = build_user_prompt(
+        post, third_party=is_third_party, variant=2, prior_replies=[result_a["reply"]]
+    )
+    result_b = await generate_variant(context, prompt_b, token)
+
+    print("  Generating variant C...", file=sys.stderr)
+    prompt_c = build_user_prompt(
+        post,
+        third_party=is_third_party,
+        variant=3,
+        prior_replies=[result_a["reply"], result_b["reply"]],
+    )
+    result_c = await generate_variant(context, prompt_c, token)
+
+    replies = [result_a["reply"], result_b["reply"], result_c["reply"]]
+    results = [result_a, result_b, result_c]
+
+    # Create tracking code if any variant includes a link
+    tracking_code = ""
+    any_link = any(r.get("includes_link") for r in results)
+    if any_link:
         if dry_run:
             tracking_code = "DRYRUN"
             print(
-                "  [dry-run] Skipping tracking link creation, using placeholder code",
+                "  [dry-run] Using placeholder tracking code",
                 file=sys.stderr,
             )
         else:
@@ -531,48 +513,49 @@ def process_url(
             tracking_code = create_tracking_link(post["url"], post["subreddit"])
             print(f"  Tracking code: {tracking_code}", file=sys.stderr)
 
-    messages: list[dict[str, Any]] = [
-        {"role": "user", "content": triage_prompt},
-        {"role": "assistant", "content": triage_response.content[0].text},
-    ]
-
-    if triage["action"] == "LINK":
-        assert tracking_code is not None
-        turn2_prompt = build_reply_prompt_link(triage, tracking_code)
-    else:
-        turn2_prompt = build_reply_prompt_advice()
-
-    messages.append({"role": "user", "content": turn2_prompt})
-
-    print("  Generating reply...", file=sys.stderr)
-    reply_response = client.messages.create(
-        model=MODEL,
-        max_tokens=1024,
-        messages=messages,
-    )
-
-    ru = reply_response.usage
-    print(
-        f"  Reply tokens: {ru.input_tokens:,} in / {ru.output_tokens:,} out (${ru.input_tokens * 3 / 1_000_000 + ru.output_tokens * 15 / 1_000_000:.3f})",
-        file=sys.stderr,
-    )
-
-    reply = reply_response.content[0].text
+    # Replace placeholder in replies that include links
+    if tracking_code:
+        for i in range(3):
+            if results[i].get("includes_link"):
+                replies[i] = replies[i].replace("{{TRACKING_CODE}}", tracking_code)
 
     if dry_run:
         print("  [dry-run] Skipping DB save", file=sys.stderr)
-        print(json.dumps(triage, indent=2))
-        print(f"\n{reply}\n")
+        for i, (label, reply) in enumerate(zip(["A", "B", "C"], replies)):
+            link_flag = " [LINK]" if results[i].get("includes_link") else ""
+            print(f"\n--- Variant {label}{link_flag} ---")
+            print(reply)
+        print()
     else:
-        draft_id = save_draft(post, triage, reply, tracking_code)
-        print(f"  Saved -> draft #{draft_id}", file=sys.stderr)
-        print(f"\n{reply}\n", file=sys.stderr)
-
-    return triage
+        existing_draft = await sync_to_async(
+            Draft.objects.filter(post_url=post["url"]).first
+        )()
+        if existing_draft:
+            existing_draft.draft_reply = replies[0]
+            existing_draft.draft_reply_b = replies[1]
+            existing_draft.draft_reply_c = replies[2]
+            existing_draft.tracking_code = tracking_code
+            existing_draft.status = Draft.Status.PENDING
+            await sync_to_async(existing_draft.save)()
+            print(f"  Saved -> draft #{existing_draft.pk}", file=sys.stderr)
+        else:
+            draft = await sync_to_async(Draft.objects.create)(
+                subreddit_name=post["subreddit"],
+                post_title=post["title"],
+                post_url=post["url"],
+                post_author=post["author"],
+                post_body=post["body"],
+                draft_reply=replies[0],
+                draft_reply_b=replies[1],
+                draft_reply_c=replies[2],
+                tracking_code=tracking_code,
+                status=Draft.Status.PENDING,
+            )
+            print(f"  Saved -> draft #{draft.pk}", file=sys.stderr)
 
 
 class Command(BaseCommand):
-    help = "Generate AI draft replies for Reddit posts"
+    help = "Generate AI draft replies for Reddit posts (v3: Agent SDK, 3 variants)"
 
     def add_arguments(self, parser: Any) -> None:
         parser.add_argument("url", nargs="?", help="Reddit post or comment URL")
@@ -584,7 +567,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--dry-run",
             action="store_true",
-            help="Triage only, print JSON, don't save",
+            help="Generate variants and print, don't save to DB",
         )
 
     def handle(self, *args: Any, **options: Any) -> None:
@@ -596,9 +579,9 @@ class Command(BaseCommand):
             self.stderr.write("Provide a Reddit URL or use --batch")
             return
 
-        api_key = settings.ANTHROPIC_API_KEY
-        if not api_key:
-            self.stderr.write("Error: Set ANTHROPIC_API_KEY in settings.py or environment")
+        token = settings.CLAUDE_CODE_OAUTH_TOKEN
+        if not token:
+            self.stderr.write("Error: CLAUDE_CODE_OAUTH_TOKEN not available")
             return
 
         data_dir = settings.DATA_DIR
@@ -618,13 +601,10 @@ class Command(BaseCommand):
                 return
 
         voice = voice_file.read_text()
-        if len(voice) > MAX_VOICE_CHARS:
-            voice = voice[:MAX_VOICE_CHARS]
-            self.stderr.write(f"Truncated voice to {MAX_VOICE_CHARS:,} chars")
         product = product_file.read_text()
         humanizer = humanizer_file.read_text()
         peptides_catalog = peptides_file.read_text()
-        posted_examples, rejected_examples = load_few_shot_examples()
+        posted_examples, rejected_examples = load_correction_history()
         banned_subs = get_banned_subreddits()
 
         self.stderr.write(
@@ -634,46 +614,51 @@ class Command(BaseCommand):
         )
         if banned_subs:
             self.stderr.write(
-                f"Banned subreddits (third-party mode): {', '.join(sorted(banned_subs))}"
+                f"Banned subreddits (third-party mode): "
+                f"{', '.join(sorted(banned_subs))}"
             )
 
-        client = anthropic.Anthropic(api_key=api_key)
+        context = build_context(
+            voice,
+            humanizer,
+            product,
+            peptides_catalog,
+            posted_examples,
+            rejected_examples,
+        )
+        self.stderr.write(f"Context: {len(context):,} chars")
 
         if batch:
-            pending = Draft.objects.filter(
-                status=Draft.Status.PENDING, action__isnull=True
-            ).order_by("id")
-            self.stderr.write(f"Found {pending.count()} pending drafts to triage")
+            pending = list(
+                Draft.objects.filter(
+                    status=Draft.Status.PENDING, draft_reply=""
+                ).order_by("id")
+            )
+            self.stderr.write(f"Found {len(pending)} pending drafts to process")
 
-            for i, draft in enumerate(pending):
-                self.stderr.write(f"\n[{i + 1}/{pending.count()}] #{draft.pk}")
-                try:
-                    process_url(
-                        draft.post_url,
-                        client,
-                        voice,
-                        product,
-                        humanizer,
-                        peptides_catalog,
-                        posted_examples,
-                        rejected_examples,
-                        banned_subs,
-                    )
-                except Exception as e:
-                    self.stderr.write(f"  Error: {e}")
+            async def run_batch() -> None:
+                for i, d in enumerate(pending):
+                    self.stderr.write(f"\n[{i + 1}/{len(pending)}] #{d.pk}")
+                    try:
+                        await process_url(
+                            d.post_url,
+                            context,
+                            token,
+                            banned_subs,
+                        )
+                    except Exception as e:
+                        self.stderr.write(f"  Error: {e}")
 
-            self.stderr.write(f"\nDone. Processed {pending.count()} drafts.")
+            asyncio.run(run_batch())
+            self.stderr.write(f"\nDone. Processed {len(pending)} drafts.")
         else:
             assert url is not None
-            process_url(
-                url,
-                client,
-                voice,
-                product,
-                humanizer,
-                peptides_catalog,
-                posted_examples,
-                rejected_examples,
-                banned_subs,
-                dry_run=dry_run,
+            asyncio.run(
+                process_url(
+                    url,
+                    context,
+                    token,
+                    banned_subs,
+                    dry_run=dry_run,
+                )
             )
